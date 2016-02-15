@@ -1,0 +1,180 @@
+
+<html>   
+
+
+    <body>
+
+        <canvas id="coinTapGame"></canvas>
+
+    </body>
+
+
+    <script>
+
+        // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+        // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+        // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+        // MIT license
+
+        var lastTime = 0;
+        var vendors = ['ms', 'moz', 'webkit', 'o'];
+        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+            window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+            window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+                || window[vendors[x]+'CancelRequestAnimationFrame'];
+        }
+
+        if (!window.requestAnimationFrame)
+            window.requestAnimationFrame = function(callback, element) {
+                var currTime = new Date().getTime();
+                var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+                                           timeToCall);
+                lastTime = currTime + timeToCall;
+                return id;
+            };
+
+        if (!window.cancelAnimationFrame)
+            window.cancelAnimationFrame = function(id) {
+                clearTimeout(id);
+            };
+
+
+        //////////////////////////
+        //////////////////////////
+        //////////////////////////
+        //////////////////////////
+        //////////////////////////
+
+        var coins= []; 
+        var coinImage, canvas;	
+        var numCoins = 5;
+
+        function gameLoop () {
+            
+            var i;
+            
+            window.requestAnimationFrame(gameLoop);
+
+            // Clear the canvas
+            canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+
+            for (i = 0; i < coins.length; i += 1) {
+                coins[i].update();
+                coins[i].render();
+            }
+        }
+
+        function sprite (options) {
+
+            var that = {},
+                frameIndex = parseInt(Math.random() * 5 + 1),
+                tickCount = 0,
+                ticksPerFrame = options.ticksPerFrame || 0,
+                numberOfFrames = options.numberOfFrames || 1;
+
+
+            that.context = options.context;
+            that.width = options.width;
+            that.height = options.height;
+            
+            that.x = 0;
+            that.y = 0;
+            that.image = options.image;
+            that.scaleRatio = 1;
+
+            //UPDATE THE SPRITE
+            that.update = function () {
+
+                tickCount += 1;
+
+                if (tickCount > ticksPerFrame) {
+
+                    tickCount = 0;
+
+                    // If the current frame index is in range
+                    if (frameIndex < numberOfFrames - 1) {	
+                        // Go to the next frame
+                        frameIndex += 1;
+                    } else {
+                        frameIndex = 0;
+                    }
+                }
+            }; 
+
+            //RENDER THE SPRITE
+            that.render = function () {
+
+                // Draw the animation
+                that.context.drawImage(
+                    that.image,
+                    frameIndex * that.width / numberOfFrames,
+                    0,
+                    that.width / numberOfFrames,
+                    that.height,
+                    that.x,
+                    that.y,
+                    that.width / numberOfFrames*that.scaleRatio,
+                    that.height*that.scaleRatio);
+            };   
+
+            return that;
+
+
+        }
+
+
+        function GenererPiece(){
+
+
+            var coinIndex, coinImg;
+
+            /*canvas = document.getElementById(id);
+            canvas.width = 100;
+            canvas.height = 100;
+            */
+            
+            coinImage = new Image();
+            coinIndex = coins.length;
+
+            coins[coinIndex] = sprite({
+                context: canvas.getContext("2d"),
+                width: 1000,
+                height: 100,
+                image: coinImage,
+                numberOfFrames: 10,
+                ticksPerFrame: 4
+            });
+
+            coins[coinIndex].x=200*coinIndex;
+            coins[coinIndex].y=50*coinIndex;
+		    coins[coinIndex].scaleRatio = Math.random() * 0.5 + 0.5;
+
+            
+            // Start the game loop as soon as the sprite sheet is loaded
+
+            coinImage.src = "img/coin-sprite-animation.png";
+            
+            console.log(coins[coinIndex].x);
+            
+        }
+
+        //Get canvas
+        canvas = document.getElementById("coinTapGame");
+        canvas.width = 10060;
+        canvas.height = 2300;
+
+        for (i = 0; i < numCoins; i += 1) {
+
+            GenererPiece();
+        }
+
+        gameLoop();
+
+
+
+
+
+    </script>
+
+</html>

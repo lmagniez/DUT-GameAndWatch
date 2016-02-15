@@ -1,0 +1,353 @@
+<html>
+  <script>
+  (function () {
+    // debut du code isole
+      
+    var CODE_TOUCHE_BAS = 40;
+    var CODE_TOUCHE_HAUT = 38;
+    var CODE_BARRE_ESPACE = 32;
+    var ALLER_BAS = false;
+    var ALLER_HAUT = false;
+      
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+      window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+      window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
+      || window[vendors[x] + 'CancelRequestAnimationFrame'];
+    }
+         
+    var sonRaquette = new Audio("./sound/pingRaquette.ogg");
+    var sonMur = new Audio("./sound/pingMur.ogg");
+     
+    var requestAnimId;
+    var echangeEnCours = false;
+    var joueurQuiEngage = 1;
+    var canvasTerrainContext;
+    var terrainLongueur = 800;
+    var terrainLargeur = 600;
+    var filetLargeur = 6;
+    var couleurTerrain = "#000000";
+    var couleurFilet = "#FFFFFF";
+    var dessinerTerrain = function() {
+      // le filet
+      canvasTerrainContext.fillStyle = couleurFilet;
+      canvasTerrainContext.fillRect(terrainLongueur/2 - filetLargeur/2, 0, filetLargeur, terrainLargeur);
+    }
+          
+    var canvasScoreContext;
+    var scoreJoueur = 0;
+    var scoreIA = 0;
+    var positionXScoreJoueur1 = 330;
+    var positionYScoreJoueur1 = 50;
+    var positionXScoreJoueur2 = 435;
+    var positionYScoreJoueur2 = 50;
+    var couleurScore = "#FFFFFF";
+    var afficherScore = function(scoreJoueur1, scoreJoueur2) {
+      canvasScoreContext.clearRect(0, 0, terrainLongueur, terrainLargeur);
+      canvasScoreContext.font = "50pt serif";
+      canvasScoreContext.fillStyle  = couleurScore;
+      canvasScoreContext.fillText(scoreJoueur1, positionXScoreJoueur1, positionYScoreJoueur1);
+      canvasScoreContext.fillText(scoreJoueur2, positionXScoreJoueur2, positionYScoreJoueur2);
+    }
+    
+    var ballePerdueJoueur = function(positionXBalle, positionXJoueur) {
+      var valeurRetour = false;
+      if ( positionXBalle < positionXJoueur ) {
+        valeurRetour = true;
+      }
+      return valeurRetour;
+    }
+ 
+    var ballePerdueIA = function(positionXBalle, positionXIA) {
+      var valeurRetour = false;
+      if ( positionXBalle > positionXIA + largeurRaquette ) {
+        valeurRetour = true;
+      }
+      return valeurRetour;
+    }
+     
+    var canvasRaquettesContext;
+    var largeurRaquette = 20;
+    var longueurRaquette = 70;
+    var positionXRaquetteA = 30;
+    var positionYRaquetteA = terrainLargeur/2;
+    var positionXRaquetteB = 750;
+    var positionYRaquetteB = terrainLargeur/2;
+    var incrementRaquetteB = 4;
+    var milieuRaquetteB = positionYRaquetteB - longueurRaquette/2;
+    var couleurRaquette = "#FFFFFF";
+    var dessinerRaquettes = function() {
+      // la raquette A
+      canvasRaquettesContext.fillStyle = couleurRaquette;
+      canvasRaquettesContext.fillRect (positionXRaquetteA, positionYRaquetteA, largeurRaquette, longueurRaquette);
+      // la raquette B       
+      canvasRaquettesContext.fillStyle = couleurRaquette;
+      canvasRaquettesContext.fillRect (positionXRaquetteB, positionYRaquetteB, largeurRaquette, longueurRaquette);       
+    }
+    var animerRaquetteA = function() {
+      if (ALLER_HAUT && positionYRaquetteA > 0)
+        positionYRaquetteA-=5;
+      else if (ALLER_BAS && positionYRaquetteA < terrainLargeur - longueurRaquette)
+        positionYRaquetteA+=5;
+    }
+      
+    var largeurBalle = 10;
+    var positionXBalle = 100;
+    var positionYBalle = 100;
+    var dessinerBalle = function() {
+      canvasRaquettesContext.fillStyle = couleurRaquette;
+      canvasRaquettesContext.fillRect (positionXBalle, positionYBalle, largeurBalle, largeurBalle);
+    }
+    var vitesseBalle = 1;
+    var incrementXBalle = 2 * vitesseBalle;
+    var incrementYBalle = 2 * vitesseBalle;
+    var animerBalle = function() {
+      positionXBalle += incrementXBalle;
+      positionYBalle += incrementYBalle;
+      dessinerBalle();
+    }
+ 
+    var testerBallePercuteMur = function() {
+      var returnValue = false;
+      if ( positionYBalle > terrainLargeur || positionYBalle < 0 ) {
+        returnValue = true;
+      }
+      return returnValue;
+    }
+     
+    var directionHorizontaleBalle = function() {
+      if ( incrementXBalle > 0  && echangeEnCours ) {
+        return "DROITE";
+      } else if ( incrementXBalle < 0  && echangeEnCours ) {
+        return "GAUCHE";
+      }
+      return "INERTE";
+    }
+     
+    var accelererBalle = function() {
+      vitesseBalle = vitesseBalle + .1;
+    }
+ 
+    var animerRaquetteB_IA = function() {
+      centreRaquetteB = positionYRaquetteB + longueurRaquette/2;
+      if (directionHorizontaleBalle() == 'DROITE') {
+        if (positionYBalle < centreRaquetteB) {
+          // la position de la balle est sur l'écran, au dessus de celle de la raquette
+          positionYRaquetteB -= incrementRaquetteB;
+        } else if (positionYBalle > centreRaquetteB ) {
+          positionYRaquetteB += incrementRaquetteB;
+        } 
+      } else {
+        // se recentrer sur le terrain
+        if ( centreRaquetteB >= terrainLargeur / 2 ) {
+          positionYRaquetteB -= incrementRaquetteB;
+        } else if ( centreRaquetteB < terrainLargeur / 2 ) {
+          positionYRaquetteB += incrementRaquetteB;
+        }
+      }
+    }
+ 
+    var positionBalleSurRaquette = function(positionYBalle, positionYRaquette, longueurRaquette) {
+      var valeurRetour = "CENTRE";
+      var taillePositionRaquette = longueurRaquette/5;
+      if ( positionYBalle > positionYRaquette - longueurRaquette && positionYBalle < positionYRaquette + taillePositionRaquette ) {
+        valeurRetour = "HAUT";
+      } else if ( positionYBalle >= positionYRaquette + taillePositionRaquette && positionYBalle < positionYRaquette + 
+                  taillePositionRaquette*2 ) {
+        valeurRetour = "MIHAUT";
+      } else if ( positionYBalle >= positionYRaquette + longueurRaquette - taillePositionRaquette*2 && positionYBalle < positionYRaquette +  
+                  longueurRaquette - taillePositionRaquette ) {
+        valeurRetour = "MIBAS";
+      }else if ( positionYBalle >= positionYRaquette + longueurRaquette - taillePositionRaquette && positionYBalle < positionYRaquette +
+                 longueurRaquette ) {
+        valeurRetour= "BAS";
+      }
+      console.log(valeurRetour);
+      return valeurRetour;
+    }
+ 
+    var changerTrajectoireBalle = function(positionYBalle, longueurRaquette, positionYRaquetteA, positionYRaquetteB ) {
+      var valeurRetour = false;
+      if (testerCollisionBalleRaquette(positionXRaquetteA, positionYRaquetteA, largeurRaquette, longueurRaquette, positionXBalle, 
+          positionYBalle, largeurBalle)) {
+        switch(positionBalleSurRaquette(positionYBalle, positionYRaquetteA, longueurRaquette)) {
+          case "HAUT":
+            incrementXBalle = 2 * vitesseBalle;
+            incrementYBalle = -3 * vitesseBalle;
+            break;
+          case "MIHAUT":
+            incrementXBalle = 2 * vitesseBalle;
+            incrementYBalle = -2 * vitesseBalle;
+            break;
+          case "CENTRE":
+            incrementXBalle = 3 * vitesseBalle;
+            incrementYBalle = 0;
+            break;
+          case "MIBAS":
+            incrementXBalle = 2 * vitesseBalle;
+            incrementYBalle = 2 * vitesseBalle;
+            break;
+          case "BAS":
+            incrementXBalle = 2 * vitesseBalle;
+            incrementYBalle = 3 * vitesseBalle;
+            break;
+        }
+        valeurRetour = true;
+      } else if (testerCollisionBalleRaquette(positionXRaquetteB, positionYRaquetteB, largeurRaquette, longueurRaquette, positionXBalle, 
+                 positionYBalle, largeurBalle)) {
+        switch(positionBalleSurRaquette(positionYBalle, positionYRaquetteB, longueurRaquette)) {
+          case "HAUT":
+            incrementXBalle = -2 * vitesseBalle;
+            incrementYBalle = -3 * vitesseBalle;
+            break;
+          case "MIHAUT":
+            incrementXBalle = -2 * vitesseBalle;
+            incrementYBalle = -2 * vitesseBalle;
+            break;
+          case "CENTRE":
+            incrementXBalle = -3 * vitesseBalle;
+            incrementYBalle = 0;
+            break;
+          case "MIBAS":
+            incrementXBalle = -2 * vitesseBalle;
+            incrementYBalle = 2 * vitesseBalle;
+            break;
+          case "BAS":
+            incrementXBalle = -2 * vitesseBalle;
+            incrementYBalle = 3 * vitesseBalle;
+            break;
+        }
+        valeurRetour = true;
+      }
+      return valeurRetour;
+    }
+ 
+    var creerCanvasContext = function(name, width, height, zindex, color) {
+      var canvas = window.document.createElement("canvas");
+      canvas.id = name;
+      canvas.style.position = "absolute";
+      if ( color != undefined )
+        canvas.style.background = color;
+      canvas.style.zIndex = zindex;
+      canvas.width = width;
+      canvas.height = height;
+      document.body.appendChild(canvas);
+      return canvas.getContext('2d');
+    }
+    
+    var initialisation = function() {
+      // le code de l'initialisation
+      canvasTerrainContext = creerCanvasContext("canvasTerrain", terrainLongueur, terrainLargeur, 0, couleurTerrain);
+      dessinerTerrain();
+    
+      canvasScoreContext = creerCanvasContext("canvasScore", terrainLongueur, terrainLargeur, 1);
+      afficherScore(0, 0);
+    
+      canvasRaquettesContext = creerCanvasContext("canvasRaquettes", terrainLongueur, terrainLargeur, 1);
+      dessinerRaquettes();
+      dessinerBalle();
+                
+      setInterval(accelererBalle, 5000);
+   
+      requestAnimId = window.requestAnimationFrame(principale); // premier appel de principale au rafraichissement de la page
+    }
+     
+    var testerCollisionBalleRaquette = function(positionRaquetteAxeX, positionRaquetteAxeY, 
+                                            largeurRaquette, hauteurRaquette, 
+                                            positionBalleAxeX, positionBalleAxeY,
+                                            tailleBalle) {
+      if ( !( positionRaquetteAxeX >= positionBalleAxeX + tailleBalle || positionRaquetteAxeX <= positionBalleAxeX - largeurRaquette 
+          || positionRaquetteAxeY >= positionBalleAxeY + tailleBalle || positionRaquetteAxeY <= positionBalleAxeY - hauteurRaquette ) ) {
+        // Collision
+        return true;
+      }
+      return false;
+    }
+ 
+    var testerBallePerdue = function() {
+      if ( ballePerdueJoueur(positionXBalle, positionXRaquetteA) ) {
+        scoreIA++;
+        afficherScore(scoreJoueur, scoreIA);
+        echangeEnCours = false;
+        joueurQuiEngage = 1;
+      } 
+      if ( ballePerdueIA(positionXBalle, positionXRaquetteB) ) {
+        scoreJoueur++;
+        afficherScore(scoreJoueur, scoreIA);
+        echangeEnCours = false;
+        joueurQuiEngage = 2;
+        setTimeout(initialiserEngagementJoueurIA, 3000);
+      }
+    }
+ 
+    var initialiserEngagementJoueur = function() {
+      positionXBalle = positionXRaquetteA + largeurRaquette;
+      positionYBalle = positionYRaquetteA;
+      vitesseBalle = 1;
+      incrementXBalle = 2 * vitesseBalle;
+      incrementYBalle = 2 * vitesseBalle;
+    }
+ 
+    var initialiserEngagementJoueurIA = function() {
+      echangeEnCours = true;
+      positionXBalle = positionXRaquetteB;
+      positionYBalle = positionYRaquetteB;
+      vitesseBalle = 1;
+      incrementXBalle = -2 * vitesseBalle;
+      incrementYBalle = 2 * vitesseBalle;
+    }
+ 
+    var principale = function() {
+      // le code du jeu
+      canvasRaquettesContext.clearRect ( 0, 0 , terrainLongueur , terrainLargeur );
+      if ( echangeEnCours ) {
+        animerBalle();
+        testerBallePerdue();
+        if ( testerBallePercuteMur() ) {
+          incrementYBalle = -incrementYBalle;
+          sonMur.play();  
+        }
+      }
+       
+      animerRaquetteA();
+      animerRaquetteB_IA();
+      dessinerRaquettes();
+      if ( changerTrajectoireBalle(positionYBalle, longueurRaquette, positionYRaquetteA, positionYRaquetteB) ) {
+        sonRaquette.play();
+      }
+      requestAnimId = window.requestAnimationFrame(principale); // rappel de principale au prochain rafraichissement de la page
+    }
+      
+    var onKeyDown = function(event) {
+      if ( event.keyCode == CODE_TOUCHE_BAS ) {
+        ALLER_BAS = true;
+      } else if ( event.keyCode == CODE_TOUCHE_HAUT ) {
+        ALLER_HAUT = true;
+      } else if  ( event.keyCode == CODE_BARRE_ESPACE && !echangeEnCours && joueurQuiEngage == 1) {
+        echangeEnCours = true;
+        initialiserEngagementJoueur();
+      }
+    }
+  
+    var onKeyUp = function(event) {
+      if ( event.keyCode == CODE_TOUCHE_BAS ) {
+        ALLER_BAS = false;
+      } else if ( event.keyCode == CODE_TOUCHE_HAUT ) {
+        ALLER_HAUT = false;
+      }
+    }
+      
+    // association des méthodes aux évènements :
+    // onKeyDown = à l'appui de la touche
+    // onKeyUp = au relèvement de la touche
+    window.onkeydown = onKeyDown;
+    window.onkeyup = onKeyUp;
+      
+    window.onload = initialisation; // appel de la fonction initialisation au chargement de la page
+        
+   // fin du code isole
+  })();
+  </script>
+ <body>
+ </body>
+</html>
