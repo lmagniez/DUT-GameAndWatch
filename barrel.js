@@ -1,3 +1,5 @@
+var lancerBarrel=false;
+
 var barrels=[];
 var cptBarrel=0;
 
@@ -62,12 +64,18 @@ function sprite (options) {
 
     //UPDATE THE SPRITE
     that.update = function () {
-
+        
+        
+        
         tickCount += 1;
 
         if (tickCount > ticksPerFrame) {
 
             tickCount = 0;
+            if(positionBarrel===0
+               ||positionBarrel===4
+               ||positionBarrel===8)
+            lancerBarrel=false;
 
             // If the current frame index is in range
             if (positionBarrel < numberOfFrames - 1) {	
@@ -78,15 +86,18 @@ function sprite (options) {
                     positionBarrel=14;
                 else positionBarrel += 1;
 
-                console.log("positionBarrel:"+positionBarrel);
+                //console.log("positionBarrel:"+positionBarrel);
+                
                 return false;
 
             } else {//on supprime si arrivé au bout
                 barrels.splice(i, 1);
                 cptBarrel=cptBarrel-1;
+                /*
                 console.log("cptBarrel:"+cptBarrel);
                 console.log("barrels length:"+barrels.length);
                 console.log("that.idBarrel:"+that.idBarrel);
+                */
                 return true;
             }
 
@@ -96,7 +107,7 @@ function sprite (options) {
 
     //RENDER THE SPRITE
     that.render = function () {
-        console.log("ok");
+        //console.log("ok");
         // Draw the animation
         that.context.drawImage(
             that.image,
@@ -132,6 +143,10 @@ function GenererBarrel(position){
         positionDK: position,
         positionBarrel: position*4,
     });
+    
+    lancerBarrel=true;
+    
+    
 
 
 
@@ -143,14 +158,3 @@ function GenererBarrel(position){
 }
 
 
-//Get canvas
-canvas = document.getElementById("coinTapGame");
-canvas.width = 10060;
-canvas.height = 2300;
-
-//GenererBarrel(1);
-GenererBarrel(1);
-GenererBarrel(2);
-GenererBarrel(0);
-
-gameLoop();
