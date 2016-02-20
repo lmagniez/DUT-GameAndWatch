@@ -1,3 +1,13 @@
+// au chargement de la page
+// association des méthodes aux évènements :
+// onKeyDown = à l'appui de la touche
+// onKeyUp = au relèvement de la touche
+window.onkeydown = onKeyDown;
+window.onkeyup = onKeyUp;
+
+
+
+
 function gameLoop () {
 
 
@@ -11,11 +21,16 @@ function gameLoop () {
     if(cptBarrel>1){
         for (i = 0; i < barrels.length; i += 1) {
 
-            if(!barrels[i].update())
-                barrels[i].render();
+            barrels[i].update()
+        }
+        
+        for (i = 0; i < barrels.length; i += 1) {
+            barrels[i].render();
         }
     }
     
+    mario.update();
+    mario.render();
     dk.update();
     dk.render();
     mains.render();
@@ -81,5 +96,6 @@ update = function () {
 
 
 GenererDK(1);
+GenererMario(0);
 
 gameLoop();

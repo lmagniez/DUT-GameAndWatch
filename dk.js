@@ -11,8 +11,6 @@ var mainY=[56,52,54,54,50,57];
 var mainL=[15,14,12,12,15,14];
 var mainH=[14,12,13,13,10,13];
 
-var posDK;
-
 
 function spriteDK (options) {
 
@@ -38,6 +36,10 @@ function spriteDK (options) {
 
     that.idBarrel=options.idBarrel;
 
+    that.getPos= function(){
+        return positionDK;
+    };
+    
 
     //UPDATE THE SPRITE
     that.update = function () {
@@ -111,25 +113,25 @@ function spriteMain (options) {
             // Draw the animation
             that.context.drawImage(
                 that.image,
-                mainX[2*posDK],
-                mainY[2*posDK],
-                mainL[2*posDK],
-                mainH[2*posDK],
-                mainX[2*posDK],
-                mainY[2*posDK],
-                mainL[2*posDK],
-                mainH[2*posDK]);
+                mainX[2*dk.getPos()],
+                mainY[2*dk.getPos()],
+                mainL[2*dk.getPos()],
+                mainH[2*dk.getPos()],
+                mainX[2*dk.getPos()],
+                mainY[2*dk.getPos()],
+                mainL[2*dk.getPos()],
+                mainH[2*dk.getPos()]);
 
             that.context.drawImage(
                 that.image,
-                mainX[2*posDK+1],
-                mainY[2*posDK+1],
-                mainL[2*posDK+1],
-                mainH[2*posDK+1],
-                mainX[2*posDK+1],
-                mainY[2*posDK+1],
-                mainL[2*posDK+1],
-                mainH[2*posDK+1]);
+                mainX[2*dk.getPos()+1],
+                mainY[2*dk.getPos()+1],
+                mainL[2*dk.getPos()+1],
+                mainH[2*dk.getPos()+1],
+                mainX[2*dk.getPos()+1],
+                mainY[2*dk.getPos()+1],
+                mainL[2*dk.getPos()+1],
+                mainH[2*dk.getPos()+1]);
         }
     };   
 

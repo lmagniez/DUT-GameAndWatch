@@ -37,6 +37,7 @@ var i;
 
 
 
+
 function sprite (options) {
 
     var that = {},
@@ -62,11 +63,15 @@ function sprite (options) {
     that.idBarrel=options.idBarrel;
 
 
+    that.getPos= function(){
+        return positionBarrel;
+    };
+
     //UPDATE THE SPRITE
     that.update = function () {
-        
-        
-        
+
+
+
         tickCount += 1;
 
         if (tickCount > ticksPerFrame) {
@@ -75,7 +80,13 @@ function sprite (options) {
             if(positionBarrel===0
                ||positionBarrel===4
                ||positionBarrel===8)
-            lancerBarrel=false;
+                lancerBarrel=false;
+
+
+            //TEST DE COLLISION
+            if(collisionBarrel[posMario]==positionBarrel)
+                collision=true;
+
 
             // If the current frame index is in range
             if (positionBarrel < numberOfFrames - 1) {	
@@ -86,9 +97,10 @@ function sprite (options) {
                     positionBarrel=14;
                 else positionBarrel += 1;
 
+                //test de collision
+
+
                 //console.log("positionBarrel:"+positionBarrel);
-                
-                return false;
 
             } else {//on supprime si arrivé au bout
                 barrels.splice(i, 1);
@@ -98,7 +110,6 @@ function sprite (options) {
                 console.log("barrels length:"+barrels.length);
                 console.log("that.idBarrel:"+that.idBarrel);
                 */
-                return true;
             }
 
 
@@ -127,6 +138,7 @@ function sprite (options) {
 }
 
 
+
 //0 1 2 en fonction position dk
 function GenererBarrel(position){
 
@@ -143,10 +155,10 @@ function GenererBarrel(position){
         positionDK: position,
         positionBarrel: position*4,
     });
-    
+
     lancerBarrel=true;
-    
-    
+
+
 
 
 
