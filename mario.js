@@ -17,8 +17,10 @@ var position_pred=-1;
 
 
 //si tab[posMario]=posBarrel -> collision
-var collisionBarrel=[29,28,27,26,25,24,23,21,20,19,-1,16,2,6,10]; 
 
+var collisionBarrel=[29,28,27,26,25,23,22,21,20,19,-1,16,2,6,10]; 
+//si tab[posObstacle]=posMario -> collision
+var collisionObstacle=[-1,23,24,-1,10];
 
 var requestAnimId;
 
@@ -32,10 +34,9 @@ for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
 
 
 var onKeyDown = function(event) {
-    console.log("ok!!");
     if ( event.keyCode == CODE_TOUCHE_DROITE ) {
         ALLER_DROITE = true;
-        console.log("detecte");
+        ALLER_DROITE = true;
     } else if ( event.keyCode == CODE_TOUCHE_GAUCHE ) {
         ALLER_GAUCHE = true;
     } 
@@ -118,16 +119,25 @@ function spriteMario (options) {
     that.image = options.image;
     that.scaleRatio = 1;
 
+    that.getPos= function(){
+        return positionMario;
+    };
 
 
     //UPDATE THE SPRITE
     that.update = function () {
+
+        console.log(positionMario);
 
         if(collision)
             positionMario=-1;
 
         tickSaut += 1;
         tickCount += 1;
+
+        //TEST DE COLLISION
+        if(collisionObstacle[obstacle.getPos()]==mario.getPos())
+            collision=true;
 
         if(tickSaut >= 50){
 
@@ -144,6 +154,8 @@ function spriteMario (options) {
             if (tickCount > ticksPerFrame) {
 
                 tickCount = 0;
+
+
 
                 if(ALLER_DROITE){
                     ALLER_DROITE=false;
@@ -166,8 +178,10 @@ function spriteMario (options) {
                     }
 
 
-                    //if(positionMario==14)
-                    //chute
+                    if(positionMario==15)
+                        setTimeout(function(){
+                            positionMario=16;
+                        }, 500);
 
 
 
@@ -184,6 +198,9 @@ function spriteMario (options) {
                         positionMario=positionMario+1;
                     }
 
+                    if(positionMario===12){
+                        bouton.activer();
+                    }
 
 
 
@@ -202,7 +219,7 @@ function spriteMario (options) {
                         testCollision(positionMario-1);
                         positionMario=positionMario-1;
                     }
-                    
+
                 }
 
                 else if(SAUT){
@@ -230,13 +247,57 @@ function spriteMario (options) {
                     else if(positionMario==14){
                         //recuperer crochet
                         positionMario=positionMario+3;
+                        
+                        //ANIMATION RECUPERATION
+                        if(crochet.getPos()===0){
+
+                            bouton.desactiver();
+
+                            //positionMario=19;
+                            crochet.setAnimationON();
+                            grue.setAnimationON();
+
+
+                            setTimeout(function(){
+                                positionMario=18;
+                                grue.setPos(1);
+                                crochet.setPos(2);
+
+                                setTimeout(function(){
+                                    positionMario=19;
+                                    grue.setPos(2);
+                                    crochet.setPos(-1);
+                                    setTimeout(function(){
+                                        grue.setPos(0);
+                                        positionMario=20;
+                                        setTimeout(function(){
+                                            crochet.setAnimationOFF();
+                                            grue.setAnimationOFF();
+                                        }, 1000);
+                                    }, 1000);
+                                }, 1000);
+                            }, 1000);
+
+
+
+
+                        }
+                        //ANIMATION CHUTE
+                        else{
+                            setTimeout(function(){
+                                positionMario=15;
+                                setTimeout(function(){
+                                    positionMario=16;
+                                }, 500);
+                            }, 500);
+                        }
+
                     }
 
                 }
 
             }
         }
-        posMario=positionMario;
     }; 
 
 
@@ -264,8 +325,6 @@ function spriteMario (options) {
 
 function testCollision(pos){
     for (i = 0; i < barrels.length; i += 1) {
-        //console.log(collisionBarrel[pos]);
-        //console.log(barrels[i].getPos());
 
         if(collisionBarrel[pos]==barrels[i].getPos()){
             //positionMario=-1;

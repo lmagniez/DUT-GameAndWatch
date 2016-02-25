@@ -17,10 +17,8 @@ function gameLoop () {
     // Clear the canvas
     canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 
-
-    if(cptBarrel>1){
+    if(cptBarrel>=1){
         for (i = 0; i < barrels.length; i += 1) {
-
             barrels[i].update()
         }
         
@@ -31,10 +29,23 @@ function gameLoop () {
     
     mario.update();
     mario.render();
+    
     dk.update();
     dk.render();
     mains.render();
     update();
+    
+    if(obstacle.getPos()<5)
+        obstacle.update();
+    if(obstacle.getPos()<5)
+        obstacle.render();
+
+    bouton.update();
+    bouton.render();
+    grue.update();
+    grue.render();
+    crochet.update();
+    crochet.render();
     
 }
 
@@ -83,13 +94,17 @@ context.drawImage(
 
 
 var clock=0;
+var clock2=0;
 update = function () {
     clock+= 1;
+    clock2+=1;
     if (clock > 200) {
-        
         clock=0;
         GenererBarrel(posDK);
-        
+    }
+    if(clock2 > 500) {
+        clock2=0;
+        GenererObstacle();
     }
 }
 //GenererBarrel(1);
@@ -97,5 +112,10 @@ update = function () {
 
 GenererDK(1);
 GenererMario(0);
+GenererObstacle();
+GenererBouton();
+GenererGrue();
+GenererCrochet();
+
 
 gameLoop();
