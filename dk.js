@@ -1,10 +1,10 @@
 var dk;
 var mains;
 
-var dkX=[42,89,129];
-var dkY=[44,44,45];
-var dkL=[33,29,35];
-var dkH=[30,31,31];
+var dkX=[42,89,129,157];
+var dkY=[44,44,45,150];
+var dkL=[33,29,35,36];
+var dkH=[30,31,31,42];
 
 var mainX=[30,66,80,113,123,159];
 var mainY=[56,52,54,54,50,57];
@@ -39,7 +39,10 @@ function spriteDK (options) {
     that.getPos= function(){
         return positionDK;
     };
-    
+    that.setPos= function(pos){
+        positionDK=pos;
+    };
+
 
     //UPDATE THE SPRITE
     that.update = function () {
@@ -167,6 +170,22 @@ function GenererDK(position){
 
     dkImg.src = "img/sprites/dk.png";
     mainImg.src = "img/sprites/barrel.png";
+
+}
+
+function animationDKChute()
+{
+    death();
+    setTimeout(function(){
+        dk.setPos(3);
+        plateforme.splice(0,1);
+        GenererPlateforme(1);
+        GenererPlateforme(2);
+        GenererPlateforme(3);
+        setTimeout(function(){
+            readyToStart=true;
+        }, 1000);
+    }, 1000);
 
 }
 

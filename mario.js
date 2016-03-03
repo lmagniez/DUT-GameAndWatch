@@ -1,5 +1,7 @@
 
 var collision=false;
+var jeu = true;
+var readyToStart = false;
 
 var CODE_TOUCHE_BAS = 40;
 var CODE_TOUCHE_DROITE = 39;
@@ -15,6 +17,9 @@ var SAUT = false;
 var tickSaut=50;
 var position_pred=-1;
 
+var score=0;
+var sauter=true;
+
 
 //si tab[posMario]=posBarrel -> collision
 
@@ -22,14 +27,6 @@ var collisionBarrel=[29,28,27,26,25,23,22,21,20,19,-1,16,2,6,10];
 //si tab[posObstacle]=posMario -> collision
 var collisionObstacle=[-1,23,24,-1,10];
 
-var requestAnimId;
-
-var vendors = ['ms', 'moz', 'webkit', 'o'];
-for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
-        || window[vendors[x] + 'CancelRequestAnimationFrame'];
-}  
 
 
 
@@ -105,8 +102,6 @@ function spriteMario (options) {
         ticksPerFrame = options.ticksPerFrame || 0,
         numberOfFrames = options.numberOfFrames || 1,
         positionMario=options.positionMario
-    //cptUpdate=0,//nb de deplacement depuis le debut
-    //0, 1 ou 2
     ;
 
 
@@ -122,25 +117,29 @@ function spriteMario (options) {
     that.getPos= function(){
         return positionMario;
     };
+    that.setPos= function(pos){
+        positionMario=pos;
+    };
 
 
     //UPDATE THE SPRITE
     that.update = function () {
 
-        console.log(positionMario);
-
-        if(collision)
-            positionMario=-1;
+        console.log(score);
 
         tickSaut += 1;
         tickCount += 1;
 
         //TEST DE COLLISION
         if(collisionObstacle[obstacle.getPos()]==mario.getPos())
-            collision=true;
+            animationDeath(positionMario);
+
+
+        
+
+
 
         if(tickSaut >= 50){
-
             if(position_pred!=-1){
                 positionMario=position_pred;
                 position_pred=-1;
@@ -155,21 +154,14 @@ function spriteMario (options) {
 
                 tickCount = 0;
 
-
-
                 if(ALLER_DROITE){
                     ALLER_DROITE=false;
-
-
-                    //if(positionMario>14)
-                    //    positionMario=positionMario+1;
 
                     if(positionMario>=0&&positionMario<=3
                        ||(positionMario>=12&&positionMario<=14)){
 
                         testCollision(positionMario);
                         positionMario=positionMario+1;
-
 
                     }
                     else if(positionMario>=6&&positionMario<=9){
@@ -179,13 +171,9 @@ function spriteMario (options) {
 
 
                     if(positionMario==15)
-                        setTimeout(function(){
-                            positionMario=16;
-                        }, 500);
-
-
-
+                        animationChute();
                 }
+
                 else if(ALLER_GAUCHE){
                     ALLER_GAUCHE=false;
                     if(positionMario>=1&&positionMario<=4||
@@ -197,16 +185,11 @@ function spriteMario (options) {
                         testCollision(positionMario);
                         positionMario=positionMario+1;
                     }
-
                     if(positionMario===12){
                         bouton.activer();
                     }
-
-
-
-
-
                 }
+
                 else if(ALLER_HAUT){
                     ALLER_HAUT=false;
                     if(positionMario==4||(positionMario>=9&&positionMario<=11))
@@ -219,7 +202,6 @@ function spriteMario (options) {
                         testCollision(positionMario-1);
                         positionMario=positionMario-1;
                     }
-
                 }
 
                 else if(SAUT){
@@ -227,7 +209,7 @@ function spriteMario (options) {
                     if(positionMario==0){
                         position_pred=0;
                         positionMario=21;
-                        tickSaut=0;    
+                        tickSaut=0;  
                     }
                     else if(positionMario==3){
                         position_pred=3;
@@ -247,49 +229,14 @@ function spriteMario (options) {
                     else if(positionMario==14){
                         //recuperer crochet
                         positionMario=positionMario+3;
-                        
+
                         //ANIMATION RECUPERATION
                         if(crochet.getPos()===0){
-
-                            bouton.desactiver();
-
-                            //positionMario=19;
-                            crochet.setAnimationON();
-                            grue.setAnimationON();
-
-
-                            setTimeout(function(){
-                                positionMario=18;
-                                grue.setPos(1);
-                                crochet.setPos(2);
-
-                                setTimeout(function(){
-                                    positionMario=19;
-                                    grue.setPos(2);
-                                    crochet.setPos(-1);
-                                    setTimeout(function(){
-                                        grue.setPos(0);
-                                        positionMario=20;
-                                        setTimeout(function(){
-                                            crochet.setAnimationOFF();
-                                            grue.setAnimationOFF();
-                                        }, 1000);
-                                    }, 1000);
-                                }, 1000);
-                            }, 1000);
-
-
-
-
+                            animationGagne();
                         }
                         //ANIMATION CHUTE
                         else{
-                            setTimeout(function(){
-                                positionMario=15;
-                                setTimeout(function(){
-                                    positionMario=16;
-                                }, 500);
-                            }, 500);
+                            animationChute();
                         }
 
                     }
@@ -327,8 +274,7 @@ function testCollision(pos){
     for (i = 0; i < barrels.length; i += 1) {
 
         if(collisionBarrel[pos]==barrels[i].getPos()){
-            //positionMario=-1;
-            collision=true;
+            animationDeath(mario.getPos());
         }
     }
 };
@@ -346,12 +292,87 @@ function GenererMario(position){
         positionMario: position,
     });
 
-
-
-    // Start the game loop as soon as the sprite sheet is loaded
-
     marioImg.src = "img/sprites/mario.png";
 
+}
+
+function animationDeath(position)
+{
+
+    death();
+    setTimeout(function(){
+        mario.setPos(-1);
+        setTimeout(function(){
+            mario.setPos(position);
+            setTimeout(function(){
+                mario.setPos(-1);
+                setTimeout(function(){
+                    mario.setPos(position);
+                    setTimeout(function(){
+                        mario.setPos(-1);
+                        readyToStart=true;
+                    }, 500);
+                }, 500);
+            }, 500);
+        }, 500);
+    }, 500);
+}
+
+function animationChute()
+{
+    death();
+    setTimeout(function(){
+        mario.setPos(15);
+        setTimeout(function(){
+            mario.setPos(16);
+            setTimeout(function(){
+                mario.setPos(-1);
+                setTimeout(function(){
+                    mario.setPos(16);
+                    setTimeout(function(){
+                        mario.setPos(-1);
+                        readyToStart=true;
+                    }, 500);
+                }, 500);
+            }, 500);
+        }, 500);
+    }, 500);   
+}
+
+function animationGagne()
+{
+    death();
+    grue.setPos(2);
+    setTimeout(function(){
+        mario.setPos(18);
+        grue.setPos(1);
+        crochet.setPos(2);
+
+        setTimeout(function(){
+            mario.setPos(19);
+            grue.setPos(2);
+            crochet.setPos(-1);
+            DetruireVie();
+            setTimeout(function(){
+                grue.setPos(0);
+                mario.setPos(20);
+                bouton.desactiver();
+
+                if(vieDK.length===0)
+                    animationDKChute();
+                readyToStart=true;
+            }, 1000);
+        }, 1000);
+    }, 1000);
+
+
+
+
+}
+
+
+function death(){
+    jeu=false;
 }
 
 

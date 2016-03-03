@@ -23,14 +23,6 @@ function spriteGrue(options) {
     that.image = options.image;
     that.scaleRatio = 1;
 
-    that.setAnimationON= function(){
-        animation=true;
-    };
-
-    that.setAnimationOFF= function(){
-        animation=false;
-    };
-
     that.setPos = function (pos) {
         position=pos;
     };
@@ -44,31 +36,22 @@ function spriteGrue(options) {
 
     //UPDATE THE SPRITE
     that.update = function () {
-
-        console.log("grue:"+animation);
         
-        if(animation===false){
-            console.log("aie aie");
-            tickCount += 1;
-
-            if (tickCount > ticksPerFrame) {
-
-                tickCount = 0;
-
-                if(bouton.isActif()) {
-                    position= 1;
-                } else {
-                    position=0;
-                }
-
-
+        tickCount += 1;
+        
+        if (tickCount > ticksPerFrame) {
+            tickCount = 0;
+            if(bouton.isActif()) {
+                position= 1;
+            } else {
+                position=0;
             }
         }
+
     };
 
     //RENDER THE SPRITE
     that.render = function () {
-        //console.log("ok");
         // Draw the animation
         that.context.drawImage(
             that.image,
@@ -99,11 +82,7 @@ function GenererGrue() {
         position: 0
     });
 
-
-    // Start the game loop as soon as the sprite sheet is loaded
-
     grueImg.src = "img/sprites/bar.png";
-
 
 }
 

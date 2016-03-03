@@ -55,8 +55,7 @@ function spriteCrochet(options) {
     that.update = function () {
 
 
-        console.log("crochet:"+animation);
-
+        
 
         if(!animation)
             if(!bouton.isActif()){

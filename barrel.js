@@ -4,34 +4,34 @@ var barrels = [];
 var cptBarrel = 0;
 
 var barrelX = [38, 47, 47, 47, //DK gauche
-             88, 94, 95, 97, //DK milieu
-             137, 140, 141, 142, //DK droite
-             142, 120, 96, 72, 47, 10, //palier 3
-             9, 10, 52, 93, 131, 169, 206, //palier 2
-             206, 169, 130, 92, 51, 10 //palier 1
-            ];
+               88, 94, 95, 97, //DK milieu
+               137, 140, 141, 142, //DK droite
+               142, 120, 96, 72, 47, 10, //palier 3
+               9, 10, 52, 93, 131, 169, 206, //palier 2
+               206, 169, 130, 92, 51, 10 //palier 1
+              ];
 
 var barrelY = [31, 83, 110, 146, //DK gauche
-             31, 83, 109, 146, //DK milieu
-             32, 83, 110, 147, //DK droite
-             166, 168, 168, 170, 171, 173, //palier 3
-             211, 242, 245, 249, 253, 256, 262, //palier 2
-             305, 309, 312, 316, 319, 323 //palier 1
-            ];
+               31, 83, 109, 146, //DK milieu
+               32, 83, 110, 147, //DK droite
+               166, 168, 168, 170, 171, 173, //palier 3
+               211, 242, 245, 249, 253, 256, 262, //palier 2
+               305, 309, 312, 316, 319, 323 //palier 1
+              ];
 var barrelL = [31, 16, 14, 13,
-             30, 16, 14, 13,
-             32, 16, 14, 13,
-             12, 12, 12, 12, 12, 12,
-             12, 12, 11, 12, 12, 11, 12,
-             12, 12, 12, 12, 12, 12
-            ];
+               30, 16, 14, 13,
+               32, 16, 14, 13,
+               12, 12, 12, 12, 12, 12,
+               12, 12, 11, 12, 12, 11, 12,
+               12, 12, 12, 12, 12, 12
+              ];
 var barrelH = [19, 12, 13, 11, //DK gauche
-             18, 12, 13, 12, //DK milieu
-             21, 12, 13, 12, //DK droite
-             12, 11, 12, 11, 11, 12, //palier 3
-             11, 11, 12, 11, 11, 12, 12, //palier 2
-             12, 11, 12, 11, 12, 12 //palier 1
-            ];
+               18, 12, 13, 12, //DK milieu
+               21, 12, 13, 12, //DK droite
+               12, 11, 12, 11, 11, 12, //palier 3
+               11, 11, 12, 11, 11, 12, 12, //palier 2
+               12, 11, 12, 11, 12, 12 //palier 1
+              ];
 var i;
 
 
@@ -47,7 +47,7 @@ function sprite(options) {
         //cptUpdate=0,//nb de deplacement depuis le debut
         positionDK = options.positionDK,//0, 1 ou 2
         positionBarrel = options.positionBarrel;
-    
+
 
 
     that.context = options.context;
@@ -69,23 +69,28 @@ function sprite(options) {
     //UPDATE THE SPRITE
     that.update = function () {
 
-
-
         tickCount += 1;
 
         if (tickCount > ticksPerFrame) {
 
+            //SCORE
+            if(position_pred!=-1)
+                if(collisionBarrel[position_pred]==positionBarrel){
+                    score+=1;
+                }
+
             tickCount = 0;
             if (positionBarrel === 0
-               ||positionBarrel === 4
-               ||positionBarrel === 8)
+                ||positionBarrel === 4
+                ||positionBarrel === 8)
                 lancerBarrel=false;
 
 
             //TEST DE COLLISION
-            if(collisionBarrel[mario.getPos()] === positionBarrel) 
-                collision=true;
-
+            if(collisionBarrel[mario.getPos()] === positionBarrel){
+                animationDeath(mario.getPos());
+                return;
+            }
 
             // If the current frame index is in range
             if (positionBarrel < numberOfFrames - 1) {	
@@ -96,22 +101,18 @@ function sprite(options) {
                     positionBarrel = 14;
                 else positionBarrel += 1;
 
-
-
-
             } else {//on supprime si arrivé au bout
                 barrels.splice(i, 1);
                 cptBarrel=cptBarrel-1;
 
             }
 
-
         }
     };
 
     //RENDER THE SPRITE
     that.render = function () {
-        
+
         // Draw the animation
         that.context.drawImage(
             that.image,
@@ -136,7 +137,7 @@ function sprite(options) {
 //0 1 2 en fonction position dk
 function GenererBarrel(position) {
 
-    
+
     cptBarrel = cptBarrel + 1;
     var barrelIndex, barrelImg;
     barrelImg = new Image();
@@ -151,14 +152,8 @@ function GenererBarrel(position) {
         positionBarrel: position * 4
     });
 
-    
+
     lancerBarrel = true;
-
-
-
-
-
-    // Start the game loop as soon as the sprite sheet is loaded
 
     barrelImg.src = "img/sprites/barrel.png";
 
