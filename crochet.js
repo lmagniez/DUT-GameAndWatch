@@ -135,7 +135,7 @@ function GenererCrochet() {
         context: canvas.getContext("2d"),
         image: crochetImg,
         numberOfFrames: 5,
-        ticksPerFrame: 100,
+        ticksPerFrame: 50,
         positionCrochet: 0,
         sens:1
     });

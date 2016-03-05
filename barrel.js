@@ -76,6 +76,10 @@ function sprite(options) {
             //SCORE
             if(position_pred!=-1)
                 if(collisionBarrel[position_pred]==positionBarrel){
+                    if (positionBarrel<24)
+                        setTimeout(function(){
+                            score+=1;
+                        }, 50);
                     score+=1;
                 }
 

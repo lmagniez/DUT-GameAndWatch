@@ -185,6 +185,11 @@ function animationDKChute()
         setTimeout(function(){
             readyToStart=true;
         }, 1000);
+        for(i=1;i<=10;i++)
+            setTimeout(function(){
+                score+=1;
+            }, 150*i);
+
     }, 1000);
 
 }

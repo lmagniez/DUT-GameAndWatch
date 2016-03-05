@@ -135,11 +135,11 @@ function spriteMario (options) {
             animationDeath(positionMario);
 
 
-        
 
 
 
-        if(tickSaut >= 50){
+
+        if(tickSaut >= 40){
             if(position_pred!=-1){
                 positionMario=position_pred;
                 position_pred=-1;
@@ -341,18 +341,24 @@ function animationChute()
 
 function animationGagne()
 {
-    death();
+    win();
     grue.setPos(2);
     setTimeout(function(){
         mario.setPos(18);
         grue.setPos(1);
         crochet.setPos(2);
 
+
+
         setTimeout(function(){
             mario.setPos(19);
             grue.setPos(2);
             crochet.setPos(-1);
             DetruireVie();
+            for(i=1;i<=10;i++)
+                setTimeout(function(){
+                    score+=1;
+                }, 150*i);
             setTimeout(function(){
                 grue.setPos(0);
                 mario.setPos(20);
@@ -373,6 +379,23 @@ function animationGagne()
 
 function death(){
     jeu=false;
+    barrels=[];
+    tickSaut=50;
+    
+    
+    DetruireVieM();
+    if(vie.length==0)
+    {
+        score=0;
+        GenererVieM(2);
+        GenererVieM(1);
+        GenererVieM(0);
+    }
+}
+
+function win(){
+    jeu=false;
+    barrels=[];
 }
 
 

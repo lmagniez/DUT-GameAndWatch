@@ -17,6 +17,12 @@ function gameLoop () {
         dk.setPos(0);
         readyToStart=false;
         
+        SAUT=false;
+        ALLER_BAS=false;
+        ALLER_DROITE=false;
+        ALLER_GAUCHE=false
+        ALLER_HAUT=false;
+        
         plateforme=[];
         GenererPlateforme(0);    
     }
@@ -44,6 +50,17 @@ function gameLoop () {
         plateforme[i].render();
     for(i=0;i<vieDK.length;i+=1)
         vieDK[i].render();
+    for(i=0;i<vie.length;i+=1)
+        vie[i].render();
+    
+    
+    for(i=0;i<chiffres.length;i+=1){
+        chiffres[i].update();
+        chiffres[i].render();
+    }
+    
+    
+    
 
     //UPDATE
     if(jeu)
@@ -144,6 +161,16 @@ GenererVie(3);
 GenererVie(2);
 GenererVie(1);
 GenererVie(0);
+
+GenererScore(0);
+GenererScore(1);
+GenererScore(2);
+GenererScore(3);
+
+GenererVieM(2);
+GenererVieM(1);
+GenererVieM(0);
+
 
 
 
