@@ -22,30 +22,34 @@
             <div class="collapse navbar-collapse text-center divnav" id="myNavbar">
                 <a class="other" href="#">Other</a>
                 <a class="accueil" href="game.html">Accueil</a>
-                <a class="other" href="highscores.html">HighScores</a>
+                <a class="other" href="#">HighScores</a>
             </div>
           </div>
         </nav>
         
-        <div class="text-center">
-            <img class="game" src="img/console.png">
-            <div class="test2">
-                <canvas id="background"></canvas>
-                <canvas id="sprites"></canvas>
-                <script type="text/javascript" src="js/game/mario.js"> </script>
-                <script type="text/javascript" src="js/game/dk.js"> </script>
-                <script type="text/javascript" src="js/game/barrel.js"> </script>
-                <script type="text/javascript" src="js/game/obstacle.js"> </script>
-                <script type="text/javascript" src="js/game/bouton.js"> </script>
-                <script type="text/javascript" src="js/game/grue.js"> </script>
-                <script type="text/javascript" src="js/game/crochet.js"> </script>
-                <script type="text/javascript" src="js/game/plateforme.js"> </script>
-                <script type="text/javascript" src="js/game/vieDK.js"> </script>
-                <script type="text/javascript" src="js/game/score.js"> </script>
-                <script type="text/javascript" src="js/game/vie.js"> </script>
-                <script type="text/javascript" src="js/game/game.js"> </script>
-            </div>
+        <div class="container">
+            <script src='js/sql.js'></script>
+            <script>
+                //Create the database 
+                var db = new SQL.Database();
+                // Run a query without reading the results 
+                db.run("CREATE TABLE scores (col1, col2);");
+                // Insert two rows: (1,111) and (2,222) 
+                db.run("INSERT INTO scores VALUES (?,?), (?,?)", [100,'Maxime',120,'Loic']);
+
+                // Prepare a statement 
+                var stmt = db.prepare("SELECT * FROM scores");
+                stmt.getAsObject({$start:1, $end:1}); // {col1:1, col2:111}
+
+                // Bind new values 
+                stmt.bind({$start:1, $end:2});
+                document.write('<TABLE BORDER="1"><TR class="tr"><TH> Score </TH><TH>Joueur </TH></TR>');
+                while(stmt.step()) { // 
+                    var row = stmt.getAsObject();
+                    document.write('<TR class="tr"><TD>'+row.col1+'</TD><TD>'+row.col2+'</TD></TR>'); 
+                }
+                document.write('</TABLE>');
+            </script> 
         </div>
-     
 
 </body>
