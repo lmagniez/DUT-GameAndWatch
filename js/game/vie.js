@@ -1,7 +1,9 @@
+
+
 var vie=[];
 
 var vieX = [108,124,140] ;
-var vieY = [335,335,335] ;
+var vieY = [335+DECALAGE,335+DECALAGE,335+DECALAGE] ;
 var vieL = [15,15,15,15] ;
 var vieH = [19,19,19,19] ;
 

@@ -3,7 +3,7 @@ var chiffres=[];
 
 
 var scoreX= [188,203,219,235];
-var scoreY= 339;
+var scoreY= 339+DECALAGE;
 var scoreL=11;
 var scoreH=19;
 

@@ -1,3 +1,5 @@
+var DECALAGE = 161;
+
 var lancerBarrel = false;
 
 var barrels = [];
@@ -15,8 +17,8 @@ var barrelY = [31, 83, 110, 146, //DK gauche
                31, 83, 109, 146, //DK milieu
                32, 83, 110, 147, //DK droite
                166, 168, 168, 170, 171, 173, //palier 3
-               211, 242, 245, 249, 253, 256, 262, //palier 2
-               305, 309, 312, 316, 319, 323 //palier 1
+               211+DECALAGE, 242+DECALAGE, 245+DECALAGE, 249+DECALAGE, 253+DECALAGE, 256+DECALAGE, 262+DECALAGE, //palier 2
+               305+DECALAGE, 309+DECALAGE, 312+DECALAGE, 316+DECALAGE, 319+DECALAGE, 323+DECALAGE //palier 1
               ];
 var barrelL = [31, 16, 14, 13,
                30, 16, 14, 13,
@@ -151,7 +153,7 @@ function GenererBarrel(position) {
         context: canvas.getContext("2d"),
         image: barrelImg,
         numberOfFrames: 31,
-        ticksPerFrame: 25,
+        ticksPerFrame: 35,
         positionDK: position,
         positionBarrel: position * 4
     });

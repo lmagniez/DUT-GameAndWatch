@@ -1,3 +1,5 @@
+
+
 // au chargement de la page
 // association des méthodes aux évènements :
 // onKeyDown = à l'appui de la touche
@@ -92,14 +94,14 @@ function gameLoop () {
 //CANVAS DES SPRITES
 canvas = document.getElementById("sprites");
 canvas.width = 258;
-canvas.height = 393;
+canvas.height = 393+DECALAGE;
 canvas.style.zIndex = 2;
 canvas.style.position = "absolute";
 
 //CANVAS DU BACKGROUND
 canvas2 = document.getElementById("background"); 
 canvas2.width = 258;
-canvas2.height = 393;
+canvas2.height = 393+DECALAGE;
 canvas2.style.zIndex = 1;
 canvas2.style.position = "absolute";
 
@@ -121,11 +123,11 @@ context.drawImage(
     0,
     0,
     258,
-    393,
+    393+DECALAGE,
     0,
     0,
     258,
-    393);
+    393+DECALAGE);
 
 
 
@@ -137,11 +139,11 @@ var clock2=0;
 update = function () {
     clock+= 1;
     clock2+=1;
-    if (clock > 200) {
+    if (clock > 400) {
         clock=0;
         GenererBarrel(posDK);
     }
-    if(clock2 > 500) {
+    if(clock2 > 700) {
         clock2=0;
         GenererObstacle();
     }

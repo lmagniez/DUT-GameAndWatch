@@ -72,16 +72,21 @@ function spriteCrochet(options) {
 
                 if(positionCrochet===-1){
                     positionCrochet=0;
-                    nbTours=2;
+                    nbTours=3;
                 }
 
                 tickCount += 1;
-
+                
+                var pos1=false;
                 if (tickCount > ticksPerFrame) {
 
                     tickCount = 0;
-
-                    if(sens===1){
+                    
+                    if(pos1)//reste plus longtemps en position 0
+                    {
+                        pos1=false;
+                    }
+                    else if(sens===1){
                         positionCrochet+=1;
 
                     }
@@ -91,10 +96,11 @@ function spriteCrochet(options) {
 
                     if(positionCrochet===numberOfFrames-1){
                         sens=2;
+                        nbTours+=-1;
                     }
                     else if(positionCrochet===0){
                         sens=1;
-                        nbTours+=-1;
+                        pos1=true;
                     }
 
                 }
@@ -135,7 +141,7 @@ function GenererCrochet() {
         context: canvas.getContext("2d"),
         image: crochetImg,
         numberOfFrames: 5,
-        ticksPerFrame: 50,
+        ticksPerFrame: 60,
         positionCrochet: 0,
         sens:1
     });

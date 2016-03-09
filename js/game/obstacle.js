@@ -1,7 +1,9 @@
+
+
 var obstacle;
 
 var obstacleX = [179, 140, 101, 63, 26];
-var obstacleY = [207, 204, 200, 197, 197];
+var obstacleY = [207+DECALAGE, 204+DECALAGE, 200+DECALAGE, 197+DECALAGE, 197+DECALAGE];
 var obstacleL = [30, 30, 29, 29, 30];
 var obstacleH = [15, 14, 14, 15, 11];
 
@@ -94,7 +96,7 @@ function GenererObstacle() {
         context: canvas.getContext("2d"),
         image: obstacleImg,
         numberOfFrames: 5,
-        ticksPerFrame: 50,
+        ticksPerFrame: 70,
         positionObstacle: 0
     });
 

@@ -1,3 +1,4 @@
+var DECALAGE = 161;
 
 var collision=false;
 var jeu = true;
@@ -72,12 +73,12 @@ var marioX=[25,69,106,146,181,//palier 1
             177,194,//chute
             158,191,196,222,//grue
             27,145,146,107];//saut
-var marioY=[309,305,302,299,294,
-            246,242,240,234,233,210,
+var marioY=[309+DECALAGE,305+DECALAGE,302+DECALAGE,299+DECALAGE,294+DECALAGE,
+            246+DECALAGE,242+DECALAGE,240+DECALAGE,234+DECALAGE,233+DECALAGE,210+DECALAGE,
             158,118,120,117,
             131,161,
             95,115,50,159,
-            285,275,219,216]
+            285+DECALAGE,275+DECALAGE,219+DECALAGE,216+DECALAGE]
 var marioL=[22,22,21,20,24,
             25,19,22,21,23,25,
             24,29,28,26,
