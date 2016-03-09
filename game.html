@@ -1,29 +1,51 @@
-<html>   
-
-
+<head>
+        <meta charset="utf-8">
+        <title>DonkeyKong - Beta</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    </head>
+    
     <body>
-        <canvas id="sprites"></canvas>
-        <canvas id="background"></canvas>
-    </body>
-    
-    <script type="text/javascript" src="mario.js"> </script>
-    <script type="text/javascript" src="dk.js"> </script>
-    <script type="text/javascript" src="barrel.js"> </script>
-   
-    <script type="text/javascript" src="obstacle.js"> </script>
-    
-    <script type="text/javascript" src="bouton.js"> </script>
-    <script type="text/javascript" src="grue.js"> </script>
-    <script type="text/javascript" src="crochet.js"> </script>
-    
-    <script type="text/javascript" src="plateforme.js"> </script>
-    <script type="text/javascript" src="vieDK.js"> </script>
-    
-    <script type="text/javascript" src="score.js"> </script>
-    <script type="text/javascript" src="vie.js"> </script>
-    
-    
-    
-    <script type="text/javascript" src="game.js"> </script>
-</html>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>                        
+              </button>
+            </div>
+            <div class="collapse navbar-collapse text-center divnav" id="myNavbar">
+                <a class="other" href="#">Other</a>
+                <a class="accueil" href="game.html">Accueil</a>
+                <a class="other" href="#">HighScores</a>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="text-center">
+            <img src="img/console.jpg">
+            <div class="test2">
+                <canvas id="background"></canvas>
+                <canvas id="sprites"></canvas>
+                <script type="text/javascript" src="js/game/mario.js"> </script>
+                <script type="text/javascript" src="js/game/dk.js"> </script>
+                <script type="text/javascript" src="js/game/barrel.js"> </script>
+                <script type="text/javascript" src="js/game/obstacle.js"> </script>
+                <script type="text/javascript" src="js/game/bouton.js"> </script>
+                <script type="text/javascript" src="js/game/grue.js"> </script>
+                <script type="text/javascript" src="js/game/crochet.js"> </script>
+                <script type="text/javascript" src="js/game/plateforme.js"> </script>
+                <script type="text/javascript" src="js/game/vieDK.js"> </script>
+                <script type="text/javascript" src="js/game/score.js"> </script>
+                <script type="text/javascript" src="js/game/vie.js"> </script>
+                <script type="text/javascript" src="js/game/game.js"> </script>
+            </div>
+        </div>
+     
 
+</body>

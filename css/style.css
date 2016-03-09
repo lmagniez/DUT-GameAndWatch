@@ -1,0 +1,38 @@
+body{
+    padding-top:150px;
+}
+
+.divnav{
+    margin-top:20px;
+    margin-bottom: 20px;
+}
+
+.accueil{
+    font-size: 32px;
+    margin-left: 30px;
+    margin-right: 30px;
+    color:white;
+}
+
+.other{
+    font-size: 16px;
+    color:white;
+}
+
+a:hover{
+    text-decoration: none;
+    color: #FFF;
+    text-shadow: 0px 0px 10px #FFF;
+}
+
+a:visited{
+    text-decoration: none;
+    color:white;
+}
+
+.test2{
+    position:relative;
+    margin-top:-555px;
+    margin-left:-255px;
+}
+
