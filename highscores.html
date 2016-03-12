@@ -29,6 +29,14 @@
         
         <div class="container">
             <script src='js/sql.js'></script>
+            
+            <form name='formNomPrenom'>
+                Entrez votre nom: <input type='text' name='nom'><br>
+                Entrez votre score: <input type='text' name='prenom'><br>
+                <input type='button' name='bouton' value='ajouter' onClick='dispNomPrenom()'>
+            </form>
+            
+            
             <script>
                 //Create the database 
                 var db = new SQL.Database();
@@ -49,7 +57,52 @@
                     document.write('<TR class="tr"><TD>'+row.col1+'</TD><TD>'+row.col2+'</TD></TR>'); 
                 }
                 document.write('</TABLE>');
-            </script> 
+                var binaryArray = db.export();
+            </script>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <script>
+            var data="fc8NiYF4";
+            var db = new SQL.Database(data);
+            var sqlstr="select * from employees"
+            db.run(sqlstr)
+            </script>
         </div>
 
 </body>

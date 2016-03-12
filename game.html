@@ -27,6 +27,16 @@
           </div>
         </nav>
         
+        <script>
+            function disableScroll(e){
+                if (e.keyCode) {
+                    /^(32|33|34|35|36|38|40)$/.test(e.keyCode) && e.preventDefault();
+                }else {
+                    e.preventDefault();
+                }
+            }
+            addEventListener("keydown", disableScroll, false);
+        </script>
         <div class="text-center">
             <img class="game" src="img/console.png">
             <div class="test2">
