@@ -21,7 +21,7 @@
             </div>
             <div class="collapse navbar-collapse text-center divnav" id="myNavbar">
                 <a class="other" href="#">Other</a>
-                <a class="accueil" href="game.html">Accueil</a>
+                <a class="accueil" href="game.html">DonkeyKong</a>
                 <a class="other" href="#">HighScores</a>
             </div>
           </div>
@@ -35,11 +35,19 @@
                 Entrez votre score: <input type='text' name='prenom'><br>
                 <input type='button' name='bouton' value='ajouter' onClick='dispNomPrenom()'>
             </form>
-            
-            
-            <script>
-                //Create the database 
-                var db = new SQL.Database();
+            <script src='js/sql.js'>
+                //Create the database
+                var bin="Oyby7xgn.bin"
+
+                var test = function bin2Array(bin) {
+                    'use strict';
+                    var i, size = bin.length, ary = [];
+                    for (i = 0; i < size; i++) {
+                        ary.push(bin.charCodeAt(i) & 0xFF);
+                    }
+                    return ary;
+                }
+                var db = new SQL.Database(test);
                 // Run a query without reading the results 
                 db.run("CREATE TABLE scores (col1, col2);");
                 // Insert two rows: (1,111) and (2,222) 
@@ -59,44 +67,6 @@
                 document.write('</TABLE>');
                 var binaryArray = db.export();
             </script>
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             <script>
             var data="fc8NiYF4";
             var db = new SQL.Database(data);

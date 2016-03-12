@@ -1,0 +1,24 @@
+<script src="js/sql.js">
+var bin="Oyby7xgn.bin"
+
+var test = function bin2Array(bin) {
+    'use strict';
+    var i, size = bin.length, ary = [];
+    for (i = 0; i < size; i++) {
+        ary.push(bin.charCodeAt(i) & 0xFF);
+    }
+    return ary;
+}
+
+var db = new SQL.Database(test);
+var res = db.exec("SELECT * FROM hello");
+stmt.getAsObject({$start:1, $end:1});
+stmt.bind({$start:1, $end:2});
+                document.write('<TABLE BORDER="1"><TR class="tr"><TH> Score </TH><TH>Joueur </TH></TR>');
+                while(stmt.step()) { // 
+                    var row = stmt.getAsObject();
+                    document.write('<TR class="tr"><TD>'+row.col1+'</TD><TD>'+row.col2+'</TD></TR>'); 
+                }
+                document.write('</TABLE>');
+                var binaryArray = db.export();
+</script>
