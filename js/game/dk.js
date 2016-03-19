@@ -49,6 +49,11 @@ function spriteDK (options) {
 
         tickCount += 1;
 
+        if(tickCount==45||tickCount==90)
+        {
+            sonFrame.play();
+        }
+        
         if (tickCount > ticksPerFrame) {
 
             tickCount = 0;
@@ -156,7 +161,7 @@ function GenererDK(position){
     dk = spriteDK({
         context: canvas.getContext("2d"),
         image: dkImg,
-        ticksPerFrame: 50,
+        ticksPerFrame: 90,
         positionDK: position,
     });
 
@@ -175,7 +180,7 @@ function GenererDK(position){
 
 function animationDKChute()
 {
-    death();
+    win();
     setTimeout(function(){
         dk.setPos(3);
         plateforme.splice(0,1);
@@ -187,10 +192,17 @@ function animationDKChute()
         }, 1000);
         for(i=1;i<=10;i++)
             setTimeout(function(){
+                sonCle.play();
                 score+=1;
             }, 150*i);
+        GenererVie(3);
+        GenererVie(2);
+        GenererVie(1);
+        GenererVie(0);
 
     }, 1000);
+    
+    
 
 }
 

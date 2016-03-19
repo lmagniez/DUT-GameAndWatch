@@ -15,6 +15,7 @@ var ALLER_HAUT = false;
 var ALLER_GAUCHE = false;
 var ALLER_DROITE = false;
 var SAUT = false;
+var DEPLACEMENT=true;
 var tickSaut=50;
 var position_pred=-1;
 
@@ -28,34 +29,44 @@ var collisionBarrel=[29,28,27,26,25,23,22,21,20,19,-1,16,2,6,10];
 //si tab[posObstacle]=posMario -> collision
 var collisionObstacle=[-1,23,24,-1,10];
 
-
-
+var sonTouche = new Audio("./sounds/appuiTouche.ogg");
+var sonCle = new Audio("./sounds/cle.ogg");
+var sonFrame = new Audio("./sounds/frame.ogg");
+var sonCollision = new Audio("./sounds/collision.ogg");
+var sonRelacheTouche = new Audio("./sounds/relacheTouche.ogg");
+var sonMario = new Audio("./sounds/saut.ogg");
 
 var onKeyDown = function(event) {
-    if ( event.keyCode == CODE_TOUCHE_DROITE ) {
+    if ( event.keyCode == CODE_TOUCHE_DROITE &&DEPLACEMENT ) {
+        sonTouche.play();
         ALLER_DROITE = true;
-        ALLER_DROITE = true;
-    } else if ( event.keyCode == CODE_TOUCHE_GAUCHE ) {
+        DEPLACEMENT=false;
+    } else if ( event.keyCode == CODE_TOUCHE_GAUCHE &&DEPLACEMENT ) {
+        sonTouche.play();
         ALLER_GAUCHE = true;
+        DEPLACEMENT=false;
     } 
-    else if ( event.keyCode == CODE_TOUCHE_BAS ) {
+    else if ( event.keyCode == CODE_TOUCHE_BAS &&DEPLACEMENT) {
+        sonTouche.play();
         ALLER_BAS = true;
+        DEPLACEMENT=false;
     } 
-    else if ( event.keyCode == CODE_TOUCHE_HAUT ) {
+    else if ( event.keyCode == CODE_TOUCHE_HAUT &&DEPLACEMENT) {
+        sonTouche.play();
         ALLER_HAUT = true;
+        DEPLACEMENT=false;
     }
-    else if ( event.keyCode == CODE_BARRE_ESPACE ) {
+    else if ( event.keyCode == CODE_BARRE_ESPACE &&DEPLACEMENT ) {
+        sonTouche.play();
         SAUT = true;
+        DEPLACEMENT=false;
     }
 }
 
 var onKeyUp = function(event) {
-
-    if ( event.keyCode == CODE_TOUCHE_BAS ) {
-        ALLER_BAS = false;
-    } else if ( event.keyCode == CODE_TOUCHE_HAUT ) {
-        ALLER_HAUT = false;
-    }
+    sonRelacheTouche.play();
+    DEPLACEMENT=true;
+   
 }
 
 
@@ -141,6 +152,7 @@ function spriteMario (options) {
 
 
         if(tickSaut >= 40){
+            
             if(position_pred!=-1){
                 positionMario=position_pred;
                 position_pred=-1;
@@ -163,11 +175,14 @@ function spriteMario (options) {
 
                         testCollision(positionMario);
                         positionMario=positionMario+1;
+                        sonMario.play();
 
                     }
                     else if(positionMario>=6&&positionMario<=9){
                         testCollision(positionMario-1);
                         positionMario=positionMario-1;
+                        sonMario.play();
+                        
                     }
 
 
@@ -181,20 +196,25 @@ function spriteMario (options) {
                        (positionMario>=13&&positionMario<=14)){
                         testCollision(positionMario-1);
                         positionMario=positionMario-1;
+                        sonMario.play();
                     }
                     else if(positionMario>=5&&positionMario<=8){
                         testCollision(positionMario);
                         positionMario=positionMario+1;
+                        sonMario.play();
                     }
                     if(positionMario===12){
                         bouton.activer();
+                        sonMario.play();
                     }
                 }
 
                 else if(ALLER_HAUT){
                     ALLER_HAUT=false;
-                    if(positionMario==4||(positionMario>=9&&positionMario<=11))
+                    if(positionMario==4||(positionMario>=9&&positionMario<=11)){
                         positionMario=positionMario+1;
+                        sonMario.play();
+                    }
                 }
 
                 else if(ALLER_BAS){
@@ -202,6 +222,7 @@ function spriteMario (options) {
                     if(positionMario==5||(positionMario>=10&&positionMario<=12)){
                         testCollision(positionMario-1);
                         positionMario=positionMario-1;
+                        sonMario.play();
                     }
                 }
 
@@ -211,11 +232,13 @@ function spriteMario (options) {
                         position_pred=0;
                         positionMario=21;
                         tickSaut=0;  
+                        sonMario.play();
                     }
                     else if(positionMario==3){
                         position_pred=3;
                         positionMario=22;
                         tickSaut=0;
+                        sonMario.play();
                     }
                     else if(positionMario==6){
                         position_pred=6
@@ -226,10 +249,12 @@ function spriteMario (options) {
                         position_pred=7;
                         positionMario=24;
                         tickSaut=0;
+                        sonMario.play();
                     }
                     else if(positionMario==14){
                         //recuperer crochet
                         positionMario=positionMario+3;
+                        sonMario.play();
 
                         //ANIMATION RECUPERATION
                         if(crochet.getPos()===0){
@@ -300,6 +325,7 @@ function GenererMario(position){
 function animationDeath(position)
 {
 
+    sonCollision.play();
     death();
     setTimeout(function(){
         mario.setPos(-1);
@@ -321,6 +347,7 @@ function animationDeath(position)
 
 function animationChute()
 {
+    sonCollision.play();
     death();
     setTimeout(function(){
         mario.setPos(15);
@@ -342,9 +369,12 @@ function animationChute()
 
 function animationGagne()
 {
+    
+    
     win();
     grue.setPos(2);
     setTimeout(function(){
+        sonMario.play();
         mario.setPos(18);
         grue.setPos(1);
         crochet.setPos(2);
@@ -352,15 +382,18 @@ function animationGagne()
 
 
         setTimeout(function(){
+            sonMario.play();
             mario.setPos(19);
             grue.setPos(2);
             crochet.setPos(-1);
             DetruireVie();
+            sonCle.play();
             for(i=1;i<=10;i++)
                 setTimeout(function(){
                     score+=1;
                 }, 150*i);
             setTimeout(function(){
+                sonMario.play();
                 grue.setPos(0);
                 mario.setPos(20);
                 bouton.desactiver();

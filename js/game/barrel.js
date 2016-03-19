@@ -153,7 +153,7 @@ function GenererBarrel(position) {
         context: canvas.getContext("2d"),
         image: barrelImg,
         numberOfFrames: 31,
-        ticksPerFrame: 35,
+        ticksPerFrame: 45,
         positionDK: position,
         positionBarrel: position * 4
     });
