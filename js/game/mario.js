@@ -14,6 +14,13 @@ var ALLER_BAS = false;
 var ALLER_HAUT = false;
 var ALLER_GAUCHE = false;
 var ALLER_DROITE = false;
+
+var TOUCHE_BAS = false;
+var TOUCHE_HAUT = false;
+var TOUCHE_GAUCHE= false;
+var TOUCHE_DROITE = false;
+var TOUCHE_SAUT = false;
+
 var SAUT = false;
 var DEPLACEMENT=true;
 var tickSaut=50;
@@ -35,36 +42,47 @@ var sonFrame = new Audio("./sounds/frame.ogg");
 var sonCollision = new Audio("./sounds/collision.ogg");
 var sonRelacheTouche = new Audio("./sounds/relacheTouche.ogg");
 var sonMario = new Audio("./sounds/saut.ogg");
+var sonGameOver = new Audio("./sounds/gameOver.ogg");
 
 var onKeyDown = function(event) {
     if ( event.keyCode == CODE_TOUCHE_DROITE &&DEPLACEMENT ) {
         sonTouche.play();
         ALLER_DROITE = true;
         DEPLACEMENT=false;
+        TOUCHE_DROITE = true;
     } else if ( event.keyCode == CODE_TOUCHE_GAUCHE &&DEPLACEMENT ) {
         sonTouche.play();
         ALLER_GAUCHE = true;
         DEPLACEMENT=false;
+        TOUCHE_GAUCHE=true;
     } 
     else if ( event.keyCode == CODE_TOUCHE_BAS &&DEPLACEMENT) {
         sonTouche.play();
         ALLER_BAS = true;
         DEPLACEMENT=false;
+        TOUCHE_BAS=true;
     } 
     else if ( event.keyCode == CODE_TOUCHE_HAUT &&DEPLACEMENT) {
         sonTouche.play();
         ALLER_HAUT = true;
         DEPLACEMENT=false;
+        TOUCHE_HAUT=true;
     }
     else if ( event.keyCode == CODE_BARRE_ESPACE &&DEPLACEMENT ) {
         sonTouche.play();
         SAUT = true;
         DEPLACEMENT=false;
+        TOUCHE_SAUT=true;
     }
 }
 
 var onKeyUp = function(event) {
     sonRelacheTouche.play();
+    TOUCHE_BAS=false;
+    TOUCHE_DROITE=false;
+    TOUCHE_HAUT=false;
+    TOUCHE_GAUCHE=false;
+    TOUCHE_SAUT=false;
     DEPLACEMENT=true;
    
 }
@@ -420,10 +438,14 @@ function death(){
     DetruireVieM();
     if(vie.length==0)
     {
-        score=0;
-        GenererVieM(2);
-        GenererVieM(1);
-        GenererVieM(0);
+        setTimeout(function(){
+            sonGameOver.play();
+            score=0;
+            GenererVieM(2);
+            GenererVieM(1);
+            GenererVieM(0);
+        },2000);
+       
     }
 }
 

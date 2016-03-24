@@ -76,6 +76,11 @@ function gameLoop () {
         grue.update();
         crochet.update();
     }
+    
+    button.update();
+    button.render();
+    pad.update();
+    pad.render();
 
     //RENDER
     mario.render();
@@ -105,8 +110,25 @@ canvas2.height = 393+DECALAGE;
 canvas2.style.zIndex = 1;
 canvas2.style.position = "absolute";
 
+//CANVAS DU PAD
+canvas3 = document.getElementById("pad"); 
+canvas3.width = 126;
+canvas3.height = 126;
+canvas3.style.zIndex = 1;
+canvas3.style.position = "absolute";
+
+//CANVAS DU BOUTON
+canvas4 = document.getElementById("button"); 
+canvas4.width = 75;
+canvas4.height = 75;
+canvas4.style.zIndex = 1;
+canvas4.style.position = "absolute";
 
 context= canvas2.getContext("2d");
+
+contextPad=canvas3.getContext("2d");
+contextButton=canvas4.getContext("2d");
+
 //context.globalAlpha=0.9;
 //context.shadowOffsetX = 5;
 //context.shadowOffsetY = 5;
@@ -172,6 +194,9 @@ GenererScore(3);
 GenererVieM(2);
 GenererVieM(1);
 GenererVieM(0);
+
+GenererButton();
+GenererPad();
 
 
 
