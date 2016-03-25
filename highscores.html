@@ -6,6 +6,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <%@ Language="Python" %> 
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     </head>
     
@@ -36,44 +37,28 @@
                     <input type='button' name='bouton' value='ajouter' onClick='ajouterScore()'>
             </form>
             <div id="res"></div>
-              <script src="js/sql.js"></script>
-                <script>
-                    
-                    function ajouterScore(){
-                        var nom = document.getElementById("nom").value;
-                        var score = document.getElementById("score").value;
-                        console.log("INSERT INTO scores(score, nom) VALUES("+score+","+"'"+nom+"'"+");");
-                        sqldb.exec("INSERT INTO scores(score, nom) VALUES("+score+","+"'"+nom+"'"+");");
-                        var data = sqldb.export();
-                        var file = fopen("scores.sqlite",3);// opens the file for writing
-                        fwrite(file, data);
-                    }
-                    
-                    function loadBinaryFile(path,success) {
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("GET", path, true); 
-                        xhr.responseType = "arraybuffer";
-                        xhr.onload = function() {
-                            var data = new Uint8Array(xhr.response);
-                            var arr = new Array();
-                            for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-                            success(arr.join(""));
-                        };
-                        xhr.send();
-                    };
+              
+                <% import sqlite3
+        conn = sqlite3.connect('ma_base.db')
 
-                    loadBinaryFile('scores.sqlite', function(data){
-                        sqldb = new SQL.Database(data);
-                        var res = sqldb.exec("SELECT * FROM scores")
-                        var size=res[0]["values"].length;
-                        var tableau="";
-                        tableau += '<TABLE BORDER="1"><TR class="tr"><TH>Score</TH><TH>Joueur</TH></TR>';
-                        for(var i=0;i<size;i++) { //
-                           tableau += '<TR class="tr"><TD>'+res[0]["values"][i][2]+'</TD><TD>'+res[0]["values"][i][1]+'</TD></TR>'; 
-                        }
-                        tableau += '</TABLE>';
-                        document.getElementById("res").innerHTML = tableau;
-                    });
-                        
-                </script>
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS scores(
+                 id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+                 name TEXT,
+                 score INTERGER
+            )
+            """)
+        conn.commit()
+
+        cursor.execute("""
+        INSERT INTO scores(name, score) VALUES(?, ?)""", ("Maxime", 120))
+
+        cursor.execute("""SELECT name, score FROM scores""")
+        user1 = cursor.fetchone()
+        print(user1)
+
+        conn.close() %>
+        
+        
 </body>
