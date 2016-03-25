@@ -9,6 +9,8 @@ var CODE_TOUCHE_DROITE = 39;
 var CODE_TOUCHE_HAUT = 38;
 var CODE_TOUCHE_GAUCHE = 37;
 
+//65 Q 90 Z 69 E
+
 var CODE_BARRE_ESPACE = 32;
 var ALLER_BAS = false;
 var ALLER_HAUT = false;
@@ -20,6 +22,19 @@ var TOUCHE_HAUT = false;
 var TOUCHE_GAUCHE= false;
 var TOUCHE_DROITE = false;
 var TOUCHE_SAUT = false;
+
+
+var CODE_TOUCHE_DROITE_DK = 90; //Z
+var CODE_TOUCHE_GAUCHE_DK = 65; //A
+var CODE_BARREL = 69; //E
+
+var ALLER_GAUCHE_DK = false;
+var ALLER_DROITE_DK = false;
+
+
+
+var BARREL = false;
+
 
 var SAUT = false;
 var DEPLACEMENT=true;
@@ -73,6 +88,21 @@ var onKeyDown = function(event) {
         SAUT = true;
         DEPLACEMENT=false;
         TOUCHE_SAUT=true;
+    }
+    //DK 2 JOUEURS
+    else if (event.keyCode == CODE_TOUCHE_DROITE_DK) {
+        console.log("droite ok");
+        sonTouche.play();
+        ALLER_DROITE_DK = true;
+    } else if ( event.keyCode == CODE_TOUCHE_GAUCHE_DK ) {
+        console.log("gauche ok");
+        sonTouche.play();
+        ALLER_GAUCHE_DK = true;
+    } 
+    else if ( event.keyCode == CODE_BARREL ) {
+        console.log("barrel ok");
+        sonTouche.play();
+        BARREL = true;
     }
 }
 
