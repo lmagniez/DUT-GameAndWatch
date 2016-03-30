@@ -18,19 +18,13 @@ function spriteObstacle(options) {
         //cptUpdate=0,//nb de deplacement depuis le debut
         positionObstacle = options.positionObstacle;//0, 1 ou 2
 
-
-
     that.context = options.context;
     that.width = options.width;
     that.height = options.height;
-
     that.x = 0;
     that.y = 0;
     that.image = options.image;
     that.scaleRatio = 1;
-
-
-
     that.getPos = function () {
         return positionObstacle;
     };
