@@ -41,16 +41,9 @@ a:visited{
     width:580px;
 }
 
-.tr{
-    text-align: center;
-    
-}
-
-
-
-th{
-    width:1000px;
-    text-align: center;
+table{
+    background-color:white;
+    border-radius:15px;
 }
 
 #pad{
@@ -61,4 +54,8 @@ th{
 #button{
     margin-top:490px;
     margin-left: 176px;
+}
+
+.none{
+    display: none;
 }

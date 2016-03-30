@@ -470,6 +470,15 @@ function death(){
     {
         setTimeout(function(){
             sonGameOver.play();
+            pseudo=window.prompt("Votre pseudo");
+            while(pseudo==''){ // Si l'utilisateur n'entre pas de pseudo
+                pseudo=window.prompt("Vous avez bien un pseudo non ?")
+            }
+            if(pseudo!=null){ //Si l'utlisateur appuie sur annuler
+                document.getElementById("score").value=score;
+                document.getElementById("nom").value=pseudo;
+                document.form.submit();
+            }
             score=0;
             GenererVieM(2);
             GenererVieM(1);

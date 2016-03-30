@@ -20,13 +20,16 @@
               </button>
             </div>
             <div class="collapse navbar-collapse text-center divnav" id="myNavbar">
-                <a class="other" href="#">Other</a>
+                <a class="other" href="game2J.html">2 Joueurs (Beta)</a>
                 <a class="accueil" href="game.html">DonkeyKong</a>
-                <a class="other" href="highscores.html">HighScores</a>
+                <a class="other" href="highscores.php">HighScores</a>
             </div>
           </div>
         </nav>
-        
+        <form name="form" class="none" method="post" action="save.php">
+            <input type="text" id="nom" name="nom" size="12"><br>
+            <input type="text" id="score" name="score" size="12">
+        </form>
         <script>
             function disableScroll(e){
                 if (e.keyCode) {
