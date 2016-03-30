@@ -51,7 +51,6 @@ function spriteBouton(options) {
 
             tickCount = 0;
 
-            // If the current frame index is in range
             if (actif) {
                 position= 1;
             } else {//on supprime si arrivé au bout

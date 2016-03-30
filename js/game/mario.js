@@ -1,29 +1,31 @@
-var DECALAGE = 161;
+var DECALAGE = 161;//decalage entre les deux écrans
 
-var collision=false;
-var jeu = true;
-var readyToStart = false;
+var collision=false;//collision
+var jeu = true;//autorise update
+var readyToStart = false;//demande appui sur espace (game.js)
 
+
+//Barre
 var CODE_TOUCHE_BAS = 40;
 var CODE_TOUCHE_DROITE = 39;
 var CODE_TOUCHE_HAUT = 38;
 var CODE_TOUCHE_GAUCHE = 37;
-
-//65 Q 90 Z 69 E
-
 var CODE_BARRE_ESPACE = 32;
+
+//vrai si on doit aller à droite
 var ALLER_BAS = false;
 var ALLER_HAUT = false;
 var ALLER_GAUCHE = false;
 var ALLER_DROITE = false;
 
+//vrai si on appui sur la touche
 var TOUCHE_BAS = false;
 var TOUCHE_HAUT = false;
 var TOUCHE_GAUCHE= false;
 var TOUCHE_DROITE = false;
 var TOUCHE_SAUT = false;
 
-
+//Utilise pour 2 joueurs
 var CODE_TOUCHE_DROITE_DK = 90; //Z
 var CODE_TOUCHE_GAUCHE_DK = 65; //A
 var CODE_BARREL = 69; //E
@@ -32,25 +34,27 @@ var ALLER_GAUCHE_DK = false;
 var ALLER_DROITE_DK = false;
 
 
-
+//vrai quand va lancer barrel
 var BARREL = false;
 
-
+//vrai quand mario va sauter
 var SAUT = false;
-var DEPLACEMENT=true;
-var tickSaut=50;
-var position_pred=-1;
+
+var DEPLACEMENT=true;//empeche répétition du déplacement quand maintient touche
+var tickSaut=50;//nb de frame du saut
+var position_pred=-1;//pour récupérer la position d'origine quand on saute
 
 var score=0;
 var sauter=true;
 
 
 //si tab[posMario]=posBarrel -> collision
-
 var collisionBarrel=[29,28,27,26,25,23,22,21,20,19,-1,16,2,6,10]; 
 //si tab[posObstacle]=posMario -> collision
 var collisionObstacle=[-1,23,24,-1,10];
 
+
+//INITIALISATION DES SONS
 var sonTouche = new Audio("./sounds/appuiTouche.ogg");
 var sonCle = new Audio("./sounds/cle.ogg");
 var sonFrame = new Audio("./sounds/frame.ogg");
@@ -59,6 +63,8 @@ var sonRelacheTouche = new Audio("./sounds/relacheTouche.ogg");
 var sonMario = new Audio("./sounds/saut.ogg");
 var sonGameOver = new Audio("./sounds/gameOver.ogg");
 
+
+//GESTION DES EVENENEMENTS CLAVIER
 var onKeyDown = function(event) {
     if ( event.keyCode == CODE_TOUCHE_DROITE &&DEPLACEMENT ) {
         sonTouche.play();
@@ -198,9 +204,10 @@ function spriteMario (options) {
 
 
 
-
+        //test si on saute
         if(tickSaut >= 40){
             
+            //QUAND ON SAUTE, retourne case origine
             if(position_pred!=-1){
                 positionMario=position_pred;
                 position_pred=-1;
@@ -210,11 +217,14 @@ function spriteMario (options) {
                 ALLER_HAUT=false;
                 SAUT=false;
             }
-
+            
+            
             if (tickCount > ticksPerFrame) {
 
                 tickCount = 0;
 
+                //DEPLACEMENT DE MARIO
+                
                 if(ALLER_DROITE){
                     ALLER_DROITE=false;
 
@@ -346,7 +356,6 @@ function spriteMario (options) {
 
 function testCollision(pos){
     for (i = 0; i < barrels.length; i += 1) {
-
         if(collisionBarrel[pos]==barrels[i].getPos()){
             animationDeath(mario.getPos());
         }
@@ -370,6 +379,7 @@ function GenererMario(position){
 
 }
 
+//animation de mort de mario (clignote)
 function animationDeath(position)
 {
 
@@ -415,6 +425,7 @@ function animationChute()
     }, 500);   
 }
 
+//animation victoire (attrape crochet)
 function animationGagne()
 {
     
@@ -458,9 +469,10 @@ function animationGagne()
 
 }
 
-
+//Perte d'une vie + fin de partie
 function death(){
     jeu=false;
+    lancerBarrel=false;
     barrels=[];
     tickSaut=50;
     
@@ -490,6 +502,7 @@ function death(){
 
 function win(){
     jeu=false;
+    lancerBarrel=false;
     barrels=[];
 }
 

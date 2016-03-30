@@ -172,7 +172,7 @@ update = function () {
         sonCle.play();
     if (BARREL&&clock >200) {
         clock=0;
-        GenererBarrel(posDK);
+        GenererBarrel(dk.getPos());
         BARREL=false;
     }
     if(clock2 > 700) {

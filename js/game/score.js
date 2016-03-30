@@ -1,7 +1,7 @@
 var vie=[];
 var chiffres=[];
 
-
+//Score du jeu
 var scoreX= [188,203,219,235];
 var scoreY= 330+DECALAGE;
 var scoreL=11;
@@ -69,9 +69,6 @@ function spriteScore(options) {
 
 function GenererScore(pos) {
 
-
-
-
     var scoreImg;
     scoreImg = new Image();
     chiffres.push(spriteScore({
@@ -81,10 +78,6 @@ function GenererScore(pos) {
         position: 0,
         positionChiffre: pos
     }));
-
-
-
-    // Start the game loop as soon as the sprite sheet is loaded
 
     scoreImg.src = "img/sprites/score.png";
 

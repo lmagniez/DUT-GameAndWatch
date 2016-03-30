@@ -1,11 +1,13 @@
 var dk;
 var mains;
 
+//DK
 var dkX=[42,89,129,157];
 var dkY=[44,44,45,150];
 var dkL=[33,29,35,36];
 var dkH=[30,31,31,42];
 
+//Mains de DK, synchronisé avec DK
 var mainX=[30,66,80,113,123,159];
 var mainY=[56,52,54,54,50,57];
 var mainL=[15,14,12,12,15,14];
@@ -34,8 +36,8 @@ function spriteDK (options) {
     that.image = options.image;
     that.scaleRatio = 1;
 
-    that.idBarrel=options.idBarrel;
 
+    //getter et setter position
     that.getPos= function(){
         return positionDK;
     };
@@ -64,13 +66,11 @@ function spriteDK (options) {
                 if(res>0.5){//Gauche
                     if(positionDK!=0){
                         positionDK=positionDK-1;
-                        posDK=positionDK;
                     }
                 }
                 else{//Droite
                     if(positionDK!=2){
                         positionDK=positionDK+1;
-                        posDK=positionDK;
                     }
                 }
 
@@ -101,8 +101,7 @@ function spriteDK (options) {
 
 function spriteMain (options) {
 
-    var that = {}
-    ;
+    var that = {};
 
 
     that.context = options.context;
@@ -170,14 +169,12 @@ function GenererDK(position){
         image: mainImg
     }); 
 
-
-    // Start the game loop as soon as the sprite sheet is loaded
-
     dkImg.src = "img/sprites/dk.png";
     mainImg.src = "img/sprites/barrel.png";
 
 }
 
+//Animation chute de DK quand il n'a plus de vie
 function animationDKChute()
 {
     win();

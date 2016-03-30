@@ -1,4 +1,5 @@
-var DECALAGE = 161;
+
+var DECALAGE = 161;//DECALAGE ENTRE LES DEUX ECRANS
 
 var lancerBarrel = false;
 
@@ -76,15 +77,18 @@ function sprite(options) {
         if (tickCount > ticksPerFrame) {
 
             //SCORE
-            if(position_pred!=-1)
-                if(collisionBarrel[position_pred]==positionBarrel){
+            if(position_pred!=-1)//si mario saute
+            {
+                if(collisionBarrel[position_pred]==positionBarrel)//test collision avec la case precedente (celle ou il a sauté)
+                {
                     if (positionBarrel<24)
                         setTimeout(function(){
                             score+=1;
                         }, 50);
                     score+=1;
                 }
-
+            }
+            
             tickCount = 0;
             if (positionBarrel === 0
                 ||positionBarrel === 4

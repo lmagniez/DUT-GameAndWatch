@@ -1,4 +1,4 @@
-
+//Animation du pad
 var pad;
 
 var padX = 0;
@@ -69,9 +69,6 @@ function GenererPad() {
         image: padImg,
         positionPad: 0
     });
-
-
-    // Start the game loop as soon as the sprite sheet is loaded
 
     padImg.src = "img/sprites/pad/pad.png";
 

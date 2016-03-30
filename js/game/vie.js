@@ -1,4 +1,4 @@
-
+//VIES DE MARIO
 
 var vie=[];
 
@@ -47,6 +47,7 @@ function spriteVieM(options) {
 
 }
 
+//genere une vie à la position pos (entre 0 et 2)
 function GenererVieM(pos) {
 
     var plateformeImg;
@@ -59,14 +60,11 @@ function GenererVieM(pos) {
         position: pos
     }));
     
-
-
-    // Start the game loop as soon as the sprite sheet is loaded
-
     vieImg.src = "img/sprites/game.png";
 
 }
 
+//Retire la dernière vie enregistrée
 function DetruireVieM(){
     vie.splice(0,1);
 }

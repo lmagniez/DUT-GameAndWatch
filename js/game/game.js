@@ -14,6 +14,7 @@ function gameLoop () {
 
     launchBG();
     
+    //Appuyer sur espace pour commencer la partie
     if(readyToStart&&SAUT){
         jeu=true;
         mario.setPos(0);
@@ -37,7 +38,7 @@ function gameLoop () {
     canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 
 
-
+    //Si il y a au moins 1 barrel, on update et render
     if(cptBarrel>=1){
         if(jeu)
             for (i = 0; i < barrels.length; i += 1) {
@@ -49,6 +50,7 @@ function gameLoop () {
         }
     }
 
+    //Render (pas de update)
     for(i=0;i<plateforme.length;i+=1)
         plateforme[i].render();
     for(i=0;i<vieDK.length;i+=1)
@@ -56,7 +58,7 @@ function gameLoop () {
     for(i=0;i<vie.length;i+=1)
         vie[i].render();
     
-    
+    //update score
     for(i=0;i<chiffres.length;i+=1){
         chiffres[i].update();
         chiffres[i].render();
@@ -78,6 +80,7 @@ function gameLoop () {
         crochet.update();
     }
     
+    //Update render des boutons et pad
     button.update();
     button.render();
     pad.update();
@@ -126,21 +129,11 @@ canvas4.style.zIndex = 1;
 canvas4.style.position = "absolute";
 
 context= canvas2.getContext("2d");
-
 contextPad=canvas3.getContext("2d");
 contextButton=canvas4.getContext("2d");
 
-//context.globalAlpha=0.9;
-//context.shadowOffsetX = 5;
-//context.shadowOffsetY = 5;
-//context.shadowBlur = 4;
-//context.shadowColor = 'rgba(123, 198, 255, 0.8)';
-//context.fillStyle = 'rgba(123, 198, 255, 0.8)';
-//context.fillRect(0, 0, 255, 384);
 
-
-
-
+//generer le background
 launchBG=function(){
 
     image=new Image();
@@ -160,8 +153,8 @@ launchBG=function(){
 }
 
 
-var clock=0;
-var clock2=0;
+var clock=0;//clock des barrels
+var clock2=0;//clock des obstacles
 
 //Update pour l'apparition de barrel/obstacle
 update = function () {
@@ -169,7 +162,7 @@ update = function () {
     clock2+=1;
     if (clock > 400) {
         clock=0;
-        GenererBarrel(posDK);
+        GenererBarrel(dk.getPos());
     }
     if(clock2 > 700) {
         clock2=0;
@@ -177,7 +170,7 @@ update = function () {
     }
 }
 
-//GENERATION DES OBJETS (1 fois)
+//GENERATION DES OBJETS (execute 1 fois)
 GenererDK(1);
 GenererMario(0);
 GenererObstacle();
@@ -203,7 +196,6 @@ GenererVieM(0);
 
 GenererButton();
 GenererPad();
-
 
 
 launchBG();

@@ -26,8 +26,6 @@ function spriteVie(options) {
 
     //RENDER THE SPRITE
     that.render = function () {
-        //console.log("ok");
-        // Draw the animation
         that.context.drawImage(
             that.image,
             10*position,
@@ -57,10 +55,6 @@ function GenererVie(pos) {
         position: pos
     }));
     
-
-
-    // Start the game loop as soon as the sprite sheet is loaded
-
     vieImg.src = "img/sprites/crochets.png";
 
 }

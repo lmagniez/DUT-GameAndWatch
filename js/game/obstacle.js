@@ -7,6 +7,8 @@ var obstacleY = [207+DECALAGE, 204+DECALAGE, 200+DECALAGE, 197+DECALAGE, 197+DEC
 var obstacleL = [30, 30, 29, 29, 30];
 var obstacleH = [15, 14, 14, 15, 11];
 
+
+//obstacle entre les 2 écrans
 function spriteObstacle(options) {
 
     var that = {},
@@ -79,11 +81,6 @@ function spriteObstacle(options) {
     };
 
     return that;
-
-
-
-
-
 
 }
 

@@ -8,6 +8,7 @@ var crochetY=[86,89,91,93,94] ;
 var crochetL=[21,14,6,11,16] ;
 var crochetH=[17,22,24,21,13] ;
 
+//Crochet que mario doit attraper
 function spriteCrochet(options) {
 
     var that = {},
@@ -55,8 +56,6 @@ function spriteCrochet(options) {
     that.update = function () {
 
 
-        
-
         if(!animation)
             if(!bouton.isActif()){
                 positionCrochet=-1;
@@ -65,7 +64,7 @@ function spriteCrochet(options) {
             }
             else
             {
-                if(nbTours===0){
+                if(nbTours===0){ //on desactive quand on le crochet a fait tous ses tours
                     bouton.desactiver();
                     return;
                 }

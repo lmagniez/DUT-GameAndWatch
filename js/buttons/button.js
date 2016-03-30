@@ -1,4 +1,4 @@
-
+//Animation du bouton saut
 var button;
 
 var buttonX = 4;
@@ -56,6 +56,7 @@ function spriteButton(options) {
 
 }
 
+//Generer Bouton (se fait une fois)
 function GenererButton() {
 
     var buttonImg;
@@ -66,9 +67,6 @@ function GenererButton() {
         image: buttonImg,
         positionObstacle: 0
     });
-
-
-    // Start the game loop as soon as the sprite sheet is loaded
 
     buttonImg.src = "img/sprites/pad/button.png";
 
