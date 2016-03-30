@@ -1,3 +1,0 @@
-git add *
-git commit -m "Test de GIT"
-git push origin master
