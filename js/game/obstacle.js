@@ -42,13 +42,7 @@ function spriteObstacle(options) {
 
         if (tickCount > ticksPerFrame) {
 
-            tickCount = 0;
-
-            
-            //TEST DE COLLISION
-            if(collisionBarrel[positionObstacle]==mario.getPos())
-                collision=true;
-
+            tickCount = 0
 
             // If the current frame index is in range
             if (positionObstacle < numberOfFrames) {
@@ -56,7 +50,6 @@ function spriteObstacle(options) {
                 positionObstacle += 1;
 
             } else {//on supprime si arrivé au bout
-                //obstacle = null;
                 return;
             }
 

@@ -54,6 +54,7 @@ var collisionBarrel=[29,28,27,26,25,23,22,21,20,19,-1,16,2,6,10];
 var collisionObstacle=[-1,23,24,-1,10];
 
 
+
 //INITIALISATION DES SONS
 var sonTouche = new Audio("./sounds/appuiTouche.ogg");
 var sonCle = new Audio("./sounds/cle.ogg");
