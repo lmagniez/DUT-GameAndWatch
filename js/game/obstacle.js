@@ -84,10 +84,5 @@ function GenererObstacle() {
         positionObstacle: 0
     });
 
-
-    // Start the game loop as soon as the sprite sheet is loaded
-
     obstacleImg.src = "img/sprites/bar.png";
-
-
 }
