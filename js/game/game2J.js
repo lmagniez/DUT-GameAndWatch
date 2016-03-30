@@ -12,7 +12,9 @@ window.onkeyup = onKeyUp;
 
 function gameLoop () {
 
+    launchBG();
 
+    
     if(readyToStart&&SAUT){
         jeu=true;
         mario.setPos(0);
@@ -138,18 +140,23 @@ contextButton=canvas4.getContext("2d");
 //context.fillRect(0, 0, 255, 384);
 
 
-image=new Image();
-image.src="img/background.png";
-context.drawImage(
-    image,
-    0,
-    0,
-    258,
-    393+DECALAGE,
-    0,
-    0,
-    258,
-    393+DECALAGE);
+launchBG=function(){
+
+    image=new Image();
+    image.src="img/background.png";
+    context.drawImage(
+        image,
+        0,
+        0,
+        258,
+        393+DECALAGE,
+        0,
+        0,
+        258,
+        393+DECALAGE
+    );
+
+}
 
 
 
@@ -202,6 +209,6 @@ GenererButton();
 GenererPad();
 
 
-
+launchBG();
 
 gameLoop();
