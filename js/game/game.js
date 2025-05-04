@@ -136,19 +136,19 @@ contextButton=canvas4.getContext("2d");
 //generer le background
 launchBG=function(){
 
-    image=new Image();
-    image.src="img/background.png";
-    context.drawImage(
-        image,
-        0,
-        0,
-        258,
-        393+DECALAGE,
-        0,
-        0,
-        258,
-        393+DECALAGE
-    );
+    // image=new Image();
+    // image.src="img/background.png";
+    // context.drawImage(
+    //     image,
+    //     0,
+    //     0,
+    //     258,
+    //     393+DECALAGE,
+    //     0,
+    //     0,
+    //     258,
+    //     393+DECALAGE
+    // );
 
 }
 
